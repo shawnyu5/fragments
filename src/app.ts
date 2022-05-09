@@ -7,7 +7,7 @@ import compression from "compression";
 // @ts-ignore
 import { version, author } from "../package.json";
 
-const logger = require("./logger");
+import logger from "./logger";
 const pino = require("pino-http")({
    // Use our default logger instance, which is already configured
    logger,
