@@ -78,4 +78,4 @@ app.use((err: any, req: Request, res: Response, next: any) => {
 });
 
 // Export our `app` so we can access it in server.js
-module.exports = app;
+export default app;
