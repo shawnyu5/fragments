@@ -1,0 +1,14 @@
+{
+   "name": "fragments",
+   "version": "1.0.0",
+   "description": "Fragments back-end API",
+   "main": "src/index.ts",
+   "scripts": {
+      "test": "jest --watch-all"
+   },
+   "author": "Shawn Yu",
+   "license": "ISC",
+   "dependencies": {
+      "prettier": "^2.6.2"
+   }
+}
