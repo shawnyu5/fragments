@@ -2,13 +2,13 @@ import express, { Request, Response } from "express";
 import cors from "cors";
 import helmet from "helmet";
 import compression from "compression";
-
+import { pinoHttp } from "pino-http";
 // version and author from our package.json file
 // @ts-ignore
 import { version, author } from "../package.json";
 
 import logger from "./logger";
-const pino = require("pino-http")({
+const pino = pinoHttp({
    // Use our default logger instance, which is already configured
    logger,
 });
