@@ -7,11 +7,12 @@ const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const helmet_1 = __importDefault(require("helmet"));
 const compression_1 = __importDefault(require("compression"));
+const pino_http_1 = require("pino-http");
 // version and author from our package.json file
 // @ts-ignore
 const package_json_1 = require("../package.json");
 const logger_1 = __importDefault(require("./logger"));
-const pino = require("pino-http")({
+const pino = (0, pino_http_1.pinoHttp)({
     // Use our default logger instance, which is already configured
     logger: logger_1.default,
 });

@@ -6,7 +6,7 @@
    "scripts": {
       "start": "node build/server.js",
       "dev": "LOG_LEVEL=debug nodemon src/server.ts",
-      "debug": "LOG_LEVEL=debug nodemon ./src/server.ts --watch src",
+      "debug": "tsc; LOG_LEVEL=debug nodemon ./src/server.ts --watch src",
       "build": "tsc",
       "lint": "tslint -p tsconfig.json",
       "test": "jest --watch-all"
