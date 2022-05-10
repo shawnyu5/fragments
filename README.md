@@ -1,7 +1,7 @@
 <!-- vim-markdown-toc GFM -->
 
 * [Fragments](#fragments)
-   * [Npm scripts](#npm-scripts)
+   * [Development](#development)
 
 <!-- vim-markdown-toc -->
 
@@ -9,7 +9,7 @@
 
 This is the project repo for CPP 555 course at Seneca college
 
-## Npm scripts
+## Development
 
 `npm start` - starts the application, with no logging as default
 
