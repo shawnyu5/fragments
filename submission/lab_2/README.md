@@ -1,26 +1,94 @@
+<!-- vim-markdown-toc GFM -->
+
+* [Lab 2](#lab-2)
+   * [AWS Academy Learner Lab](#aws-academy-learner-lab)
+   * [AWS Management Console](#aws-management-console)
+   * [Amazon Cognito User Pool Setup](#amazon-cognito-user-pool-setup)
+   * [Create the `fragments-ui` web app and repo](#create-the-fragments-ui-web-app-and-repo)
+   * [Client App Setup](#client-app-setup)
+   * [Connect Web App to User Pool](#connect-web-app-to-user-pool)
+   * [Test Authentication Flows](#test-authentication-flows)
+   * [Secure fragments Routes](#secure-fragments-routes)
+   * [Connect Client Web App to Secure Microservice](#connect-client-web-app-to-secure-microservice)
+   * [Submission](#submission)
+
+<!-- vim-markdown-toc -->
+
 # Lab 2
 
-This is lab covers some critically important concepts and technologies. It will get you started working with AWS and guide you through securing your `fragments` microservice. It will also show you how to create a simple web client, `fragments-ui`, for manual testing of your `fragments` microservice API.
+This is lab covers some critically important concepts and technologies. It will
+get you started working with AWS and guide you through securing your `fragments`
+microservice. It will also show you how to create a simple web client,
+`fragments-ui`, for manual testing of your `fragments` microservice API.
 
-This lab will take you some time to complete, so please give yourself lots of time to work on it. You don't need to finish it in a single sitting and are encouraged to break it up over a series of sessions. As you work, remember to use git to `add` and `commit` your changes (e.g., whenever you get something working, or make a significant change).
+This lab will take you some time to complete, so please give yourself lots of
+time to work on it. You don't need to finish it in a single sitting and are
+encouraged to break it up over a series of sessions. As you work, remember to
+use git to `add` and `commit` your changes (e.g., whenever you get something
+working, or make a significant change).
 
-The cloud is big and complicated by the fact that you have to worry about security from day-one. Everyone doing this lab is going to get stuck or run into problems. That's OK! Write down any questions or problems you encounter and bring them up in class and/or post them to the course Discussions.
+The cloud is big and complicated by the fact that you have to worry about
+security from day one. Everyone doing this lab is going to get stuck or run into
+problems. That's OK! Write down any questions or problems you encounter and
+bring them up in the course Discussions. I promise you won't be the only person
+who struggles with something.
 
 Take your time. Don't give up if you get stuck. Ask questions. You can do this!
 
 ## AWS Academy Learner Lab
 
-1. You will have received an email with links to create your **AWS Academy Learn Lab account**. If you did not receive one, please contact your professor. Once you create your account, please read the **AWS Academy Learner Lab - Student Guide.pdf** in the **Modules** section of the course.
+1. You will have received an email with links to create your **AWS Academy Learn
+   Lab account**. If you did not receive one, please contact your professor.
+   Once you create your account, please read the **AWS Academy Learner Lab -
+   Student Guide.pdf** in the **Modules** section of the course.
 
-2. Once you're ready to start the lab, click **Modules** and then **Learner Lab - Foundational Services**. Start the lab environment by clicking the **Start Lab** button (it takes a minute to start). Your lab session (and AWS Learner Lab account environment) will be available for **6 hours** from the time you start the lab. You can monitor your remaining lab time at the top of the lab. If you need more time and are going to run out, you can always click **Start Lab** again to restart the clock. When you're done working, click **End Lab** to pause your AWS resources. NOTE: nothing will be deleted, and you can carry on later by restarting the lab.
+2. Once you're ready to start the lab, click **Modules** and then **Learner Lab
+   - Foundational Services**. Start the lab environment by clicking the **Start
+     Lab** button. It takes a while to start, especially the first time, since
+     cloud resources have to be provisioned. Your lab session (and AWS Learner
+     Lab account environment) will be available for **4 hours** from the time
+     you start the lab. You can monitor your remaining lab time at the top of
+     the lab. If you need more time and are going to run out, you can always
+     click **Start Lab** again to **restart** the clock. When you're done
+     working, click **End Lab** to pause your AWS resources. NOTE: nothing will
+     be deleted, and you can carry on later by restarting the lab. Be careful
+     not to hit the **Reset** button, which **will** delete everything.
 
-3. When the lab is stopped, the **AWS** button will have a red dot next to it. When the lab is starting, the button will have a yellow dot. Once the lab environment is fully started, the **AWS** button will have a green dot next to it. Once it goes green, you can click it to open the [AWS Management Console](https://aws.amazon.com/console/faq-console/) in a new tab.
 
-4. You are now logged into AWS with a **temporary account and session**. This account is able to access more than 50 AWS services. Any resources that you provision in the AWS Console will continue to exist after you end the lab session. NOTE: some services will continue to work when the lab session is ended and others will pause (e.g., EC2 instances). When you click **Start Lab** again, all of your resources will be restarted.
+3. When the lab is stopped, the **AWS** button will have a red dot next to it.
+   When the lab is starting, the button will have a yellow dot. Once the lab
+   environment is fully started, the **AWS** button will have a green dot next
+   to it. Once it goes green, you can click it to open the [AWS Management
+   Console](https://aws.amazon.com/console/faq-console/) in a new tab.
 
-5. You have 100 AWS credits available to your account. This **cannot** be increased and once you spend it, it's gone. You must pay careful attention to your spending, and not waste money on services not needed for the labs and assignments. You can monitor your spending using the information at the top of the lab, which will say how much of your 100 AWS credits has been used. NOTE: this value is often delayed by up to **8 hours**.
+4. You are now logged into AWS with a **temporary account and session**. This
+   account is able to access more than 50 AWS services. Any resources that you
+   provision in the AWS Console will continue to exist after you end the lab
+   session. NOTE: some services will continue to work when the lab session is
+   ended and others will be paused (e.g., EC2 instances). When you click **Start
+   Lab** again, all of your resources will be available/re-started.
 
-6. Back in the **AWS Academy Learner Lab** browser tab, clicking the **AWS Details** button will show you various details about your session, including the **AWS CLI Show** button. Clicking the **Show** button will reveal your [AWS Security Credentials](https://docs.aws.amazon.com/general/latest/gr/aws-security-credentials.html). They include a [Profile name](https://docs.aws.amazon.com/sdkref/latest/guide/file-format.html), an [Access Key](https://docs.aws.amazon.com/sdkref/latest/guide/setting-global-aws_secret_access_key.html), [Secret Key](https://docs.aws.amazon.com/sdkref/latest/guide/setting-global-aws_secret_access_key.html), and [Session Token](https://docs.aws.amazon.com/sdkref/latest/guide/setting-global-aws_session_token.html) and will look something like this:
+5. You have **$100 AWS credits** available to your account. This **cannot** be
+   increased and once you spend it, it's gone. You must pay careful attention to
+   your spending, and not waste money on services not needed for the labs and
+   assignments. You can monitor your spending using the information at the top
+   of the lab, which will say how many of your $100 AWS credits have been used.
+   NOTE: this value is often delayed by up to **8 hours**.
+
+6. Back in the **AWS Academy Learner Lab** browser tab, clicking the **AWS
+   Details** button will show you various details about your session, including
+   the **AWS CLI Show** button. Clicking the **Show** button will reveal your
+   [AWS Security
+   Credentials](https://docs.aws.amazon.com/general/latest/gr/aws-security-credentials.html).
+   They include a [Profile
+   name](https://docs.aws.amazon.com/sdkref/latest/guide/file-format.html), an
+   [Access
+   Key](https://docs.aws.amazon.com/sdkref/latest/guide/setting-global-aws_secret_access_key.html),
+   [Secret
+   Key](https://docs.aws.amazon.com/sdkref/latest/guide/setting-global-aws_secret_access_key.html),
+   and [Session
+   Token](https://docs.aws.amazon.com/sdkref/latest/guide/setting-global-aws_session_token.html)
+   and will look something like this:
 
 ```ini
 [default]
@@ -29,27 +97,31 @@ aws_secret_access_key=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
 aws_session_token=AQoEXAMPLEH4aoAH0gNCAPy...rkuWJOgQs8IZZaIv2BXIa2R4Olgk
 ```
 
-Here the credentials for the `default` profile are defined. NOTE: in the future we will store these credentials in an [`.aws/` folder in your home directory](https://docs.aws.amazon.com/sdkref/latest/guide/file-location.html), for example: `~/.aws/credentials`. For now, you don't need to do anything with them, other than know where to find them in the future.
+Here the credentials for the `default` profile are defined. NOTE: in the future
+we will store these credentials in an [`.aws/` folder in your home
+directory](https://docs.aws.amazon.com/sdkref/latest/guide/file-location.html),
+for example: `~/.aws/credentials`. For now, you don't need to do anything with
+them, other than learn where to find them.
 
 We'll need these values in order to work with many AWS tools and SDKs locally. Your credentials should be kept **secret**. Don't share them, check them into git, or lose them.
 
 Also be aware that **your Account credentials (e.g., session token) will change each time you start and stop the lab environment**. Whenever you need to work with AWS credentials on your local machine, you'll have to get the updated ones for your current lab session (it's annoying, but we'll work around it with some scripts later on).
 
-7. An **AWS CLI** terminal is also available in the lab view. It is configured with your **AWS Security Credentials**, and you can use the [AWS CLI](https://aws.amazon.com/cli/) to manage your AWS services. Type `aws help` to see help info (press `space` to scroll, `q` to exit).
+7. An **AWS CLI** terminal is also available in the lab view. It is automatically configured with your current **AWS Security Credentials**, and you can use the [AWS CLI](https://aws.amazon.com/cli/) to manage your AWS services. Type `aws help` to see help info (press `space` to scroll, `q` to exit).
 
 ## AWS Management Console
 
 8. Click the **AWS** button to open the **AWS Management Console** logged into your student account. At the top, click the **Services** button to see a list of all AWS Services, or **Search for services, features, blogs, docs and more**.
 
-9. [Amazon Cognito](https://aws.amazon.com/cognito/) lets you add [user sign-up, sign-in, and access control](https://aws.amazon.com/cognito/details/) to any app. Amazon will automatically manage and securely store your user accounts, providing APIs and UI to authenticate, authorize, and manage users. The service is [free (forever) to use for the first 50,000 users each month](https://aws.amazon.com/cognito/pricing/?loc=ft#Free_Tier), and is then billed per monthly user activity. The [docs](https://aws.amazon.com/cognito/getting-started/) have more details about [User Pools](https://docs.aws.amazon.com/cognito/latest/developerguide/getting-started-with-cognito-user-pools.html) and how to use them.
+9. The first service we'll use is [Amazon Cognito](https://aws.amazon.com/cognito/), which lets you add [user sign-up, sign-in, and access control](https://aws.amazon.com/cognito/details/) to any app. Amazon will automatically manage and securely store your user accounts, providing APIs and UI to authenticate, authorize, and manage users. The service is [free (forever) to use for the first 50,000 users each month](https://aws.amazon.com/cognito/pricing/?loc=ft#Free_Tier), and is then billed per monthly user activity. The [docs](https://aws.amazon.com/cognito/getting-started/) have more details about [User Pools](https://docs.aws.amazon.com/cognito/latest/developerguide/getting-started-with-cognito-user-pools.html) and how to use them.
 
 10. In the **AWS Management Console** search bar, type `Cognito` to find the Amazon Cognito service.
 
 ## Amazon Cognito User Pool Setup
 
-A [User Pool](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-identity-pools.html) is a user directory (i.e., database). We'll use a User Pool to [authenticate users in a web app](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-scenarios.html#scenario-basic-user-pool) and to [authorize users of our back-end microservice](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-scenarios.html#scenario-backend).
+A [User Pool](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-identity-pools.html) is a user directory (i.e., account database). Instead of building and maintaining our own auth system, we'll use an Amazon cloud service. We'll rely on a User Pool to [authenticate users in a web app](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-scenarios.html#scenario-basic-user-pool) and to [authorize users of our back-end microservice](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-scenarios.html#scenario-backend).
 
-11. To create a **User Pool**, click the **Manage User Pools** button in the AWS Console Amazon Cognito page. NOTE: there is both a legacy _and_ new user interface for Amazon Cognito, and these instructions will use the old UI.
+11. To create a **User Pool**, click the **Manage User Pools** button in the AWS Console Amazon Cognito page. NOTE: there is both a legacy _and_ new user interface for Amazon Cognito, and these instructions will use the old UI. You're free to use whichever you want, but be aware of different naming if you use the newer UI.
 
 12. Click the **Create a user pool** button, and give your pool a name. For example, `fragments-users`.
 
@@ -61,7 +133,7 @@ A [User Pool](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-
 
 16. Set the **Password** options that you want to use. The defaults are OK, but you can decide and adjust things as you wish. When you're finished, click **Next step**.
 
-17. Set the **Multi-Factor Authenticate (MFA) and Account Recovery** options. There are extra charges associated with MFA, which we won't use. The only attributes that we'll verify are the user's **Email**. Also make sure that you select **Email** under **Which attributes do you want to verify?**. This will allow Cognito to email a verification code to a user's email address in order to validate their account. The other defaults are OK. Click **Next step**.
+17. Set the **Multi-Factor Authenticate (MFA) and Account Recovery** options. There are extra charges associated with MFA, which we won't use. The only attribute that we'll verify is the user's **Email** (i.e., a user will have to prove they own an email address before we allow them to sign up). Also make sure that you select **Email** under **Which attributes do you want to verify?**. This will allow Cognito to email a verification code to a user's email address in order to validate their ownership of the email address. The other defaults are OK as they are. Click **Next step**.
 
 18. Set the **Message Customization** options that you want to use. When a user signs up, these are the email messages that get sent. The defaults are OK, but you can modify the **Verification and Invitation** messages if you like. Click **Next step** when you are done.
 
@@ -69,7 +141,7 @@ A [User Pool](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-
 
 20. Set the **Devices** options that you want to use. The defaults are OK (i.e., we don't need to remember device logins). Click **Next step**.
 
-21. Set the **App Clients** options that you want to use. In the next sections, we'll create a web app to test our `fragments` API, so we need to register an App Client now. Click **Add an app client**. Give your App Client a name: `fragments-ui`. Next, **uncheck** the **Generate client secret** checkbox: since we're building a web app, we can't use a client secret (i.e., you can't hide a secret in JavaScript run in a browser, since it gets downloaded as plain text). The other settings are fine using the defaults. Click **Create app client**. The `fragments-ui` should be listed as one of the app clients that will have access to this User Pool. Click **Next Step**.
+21. Set the **App Clients** options that you want to use. In the next sections, we'll create a web app to test our `fragments` API, so we need to register an App Client now. Click **Add an app client**. Give your App Client a name: `fragments-ui`. Next (and this is important), **uncheck** the **Generate client secret** checkbox: since we're building a web app, we can't use a client secret (i.e., you can't hide a secret in JavaScript run in a browser, because it gets downloaded as plain text). The other settings are fine using the defaults. Click **Create app client**. The `fragments-ui` should be listed as one of the app clients that will have access to this User Pool. Click **Next Step**.
 
 22. Set the **Workflow Triggers** options that you want to use. These triggers represent calls to serverless cloud functions (i.e., [Lambda functions](https://docs.aws.amazon.com/lambda/latest/dg/welcome.html)) that happen at different stages of authentication and authorization. We won't be using any custom triggers or functions, so you can click **Next Step**.
 
@@ -88,7 +160,7 @@ If you make a mistake, or need to redo the steps above, you can always delete th
 27. [Clone](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) your `fragments-ui` repo to your local machine and go into the `fragments-ui` directory. I would suggest cloning your `fragments-ui` and `fragments` repos in the same parent folder:
 
 ```
-ccp555/
+cloud-for-programmers/
 ├─ fragments/
 ├─ fragments-ui/
 ```
@@ -102,7 +174,7 @@ cd fragments-ui
 npm init -y
 ```
 
-Edit your `package.json` file to look something like this (use your own info):
+Edit your `package.json` file to look something like this (change the details to use your own info):
 
 ```json
 {
@@ -122,29 +194,33 @@ Edit your `package.json` file to look something like this (use your own info):
 }
 ```
 
-29. You're creating a simple web app for testing your microservice, and you can choose any web framework/libraries that you want to use. It doesn't matter what you use, including React, Angular, Vue, Svelte, etc. or no framework at all (i.e., just HTML and JavaScript). We aren't building a production-grade web app, just a very simple test UI. You can use this as a way to play with a new framework if you want, or keep things easy and use none; it's up to you. In my sample code below, I'll use no framework and just write HTML, CSS, and JavaScript.
+29. You're creating a simple web app for testing your microservice, and you can choose any web framework/libraries that you want to use. It doesn't matter what you use, including React, Angular, Vue, Svelte, etc. or no framework at all (i.e., just HTML and JavaScript or TypeScript). We aren't building a production-grade web app, just a very simple test UI. You can use this as a way to play with a new framework if you want, or keep things easy and use none; it's up to you. In my sample code below, I'll use no framework and just write basic HTML, CSS, and JavaScript.
 
 If you choose to use a web framework, install the necessary dependencies and get it set up.
 
-If you choose not to use a framework, use [Parcel](https://parceljs.org/) to bundle your JavaScript, manage environment variables, and provide hot-reloading. Follow the [installation instructions for using Parcel with a web app](https://parceljs.org/getting-started/webapp/). NOTE: Parcel generates build files (`dist/` directory) and a cache (`.parcel-cache/` directory) that you should add to your `.gitignore` (e.g. they don't belong in git).
+If you choose not to use a framework, at least use [Parcel](https://parceljs.org/) to bundle your JavaScript, manage environment variables, and provide hot-reloading. Follow the [installation instructions for using Parcel with a web app](https://parceljs.org/getting-started/webapp/). NOTE: Parcel generates build files (`dist/` directory) and a cache (`.parcel-cache/` directory) that you should add to your `.gitignore`. Build artifacts (things you generate) don't belong in git.
 
 Because you have already completed all of the web stream courses, I assume that you can create and set up a web app on your own. However, I will give you specific instructions and code related to working with the AWS Cognito User Pool.
 
-30. Make a note of the **Port** and **Hostname** that your web app runs on locally (i.e., when you `npm start` your app). For example: many React apps run on <http://localhost:3000>; Angular apps on <http://localhost:4200>; Parcel uses <http://localhost:1234>. We'll need this info in the next steps.
+30. Make a note of the **Port** and **Hostname** that your web app runs on locally (i.e., when you `npm start` your app). For example: many React apps run on <http://localhost:3000>; Angular apps on <http://localhost:4200>; and Parcel uses <http://localhost:1234>. We'll need this info in the next steps.
 
 ## Client App Setup
 
-We need to tell Amazon Cognito about our web app. For security reasons, Cognito won't allow just any app to access your user pool, it has to be registered first and configured.
+We need to tell Amazon Cognito about our web app. For security reasons, Cognito
+won't allow just any app to access your user pool, it has to be pre-registered
+and configured first.
 
-31. Go back to the **AWS Management Console**, and your **Cognito User Pool**, where we need to configure our **App integration**. That is, we have to tell our User Pool details about our web app so that it can be configured, and authentication redirect URLs set up.
+31. Go back to the **AWS Management Console**, and to your **Cognito User Pool**, where we need to configure our **App integration**. That is, we have to tell our User Pool details about our web app so that it can be configured, and authentication redirect URLs set up.
 
 32. Click the **App client settings** option on the left. Make a note of the **ID** (i.e., the **Client App ID**) for your `fragments-ui` App client, which is a 26 character string (e.g., something like `a1b2c3d4e5f6g7h8i9j0k1l2m3`). We'll use this id in a number of places below.
 
 33. Click the **Cognito User Pool** checkbox under **Enabled Identity Pools**, in order to allow our app to access our User Pool.
 
-34. Add **Callback** and **Sign out** URLs. When users sign-in with our app, they will be redirected to Amazon Cognito, which will handle the authentication for us. These URLs point Amazon Cognito back to our web app, indicating where to redirect a user when they successful sign-in or sign-out. You can use the main URL for your web app from above, e.g., <http://localhost:1234> (or whatever host/port you are using). If we were a more complete web app, we might have different URLs for the login and logout cases, but in this case, using the same URL for both is fine. NOTE: you could include multiple URLs separated by commas to authorize multiple end-points. This would be common for having separate development, staging, and production URLs. We will only focus on development for now, but you can come back and add more later if you like.
+34. Add **Callback** and **Sign out** URLs. When users sign-in with our web app, they will be redirected to Amazon Cognito's hosted login, which will handle the authentication for us. These URLs point Amazon Cognito back to our web app, indicating where to redirect a user when they successful sign-in or sign-out. You can use the main URL for your web app from above, e.g., <http://localhost:1234> (or whatever host/port you are using). NOTE: pay attention to the final slash `/`, and either leave it out, or include it, but do the same thing in all config/code (i.e., it must match exactly). If we were building a more complete web app, we might have different URLs for the login and logout cases, but in this case, using the same URL for both is fine. NOTE: you could include multiple URLs separated by commas to authorize multiple end-points. This would be common for having separate development, staging, and production URLs. We will only focus on development for now, but you can come back and add more later if you like.
 
-35. Choose the [**OAuth 2.0**](https://oauth.net/2/) flows to allow. In our case, since we're building a web app, we'll choose **Authorization code grant**, which [allows clients to obtain tokens](https://www.oauth.com/oauth2-servers/single-page-apps/) that we'll use to access our microservice.
+> NOTE: these redirect URLs normally need to be HTTPS (secure), but you can use HTTP with `localhost` development URLs. We won't be worrying about doing a proper deployment of our web app, so <http://localhost> is fine for our testing purposes.
+
+35. Choose the [**OAuth 2.0**](https://oauth.net/2/) flows to allow. In our case, since we're building a web app, we'll choose **Authorization code grant**, which [allows clients to obtain tokens](https://www.oauth.com/oauth2-servers/single-page-apps/) that we'll then use to access our microservice securely.
 
 36. Choose the **OAuth Scopes** to allow. [OAuth Scopes](https://oauth.net/2/scope/) allow us to define which aspects of a user's identity and account information an application should be able to access. We'll need `email`, `openid`, and `profile`.
 
@@ -158,7 +234,9 @@ We need to tell Amazon Cognito about our web app. For security reasons, Cognito 
 
 Authentication and Authorization are a complicated dance, involving redirects, access codes, tokens, etc. We could write code to do it all manually, but it's hard to get right, and a waste of time for everyone to implement manually.
 
-In order to simplify connecting our web app to our Cognito User Pool and Hosted UI, we'll use the Amazon [aws-amplify](https://www.npmjs.com/package/aws-amplify) JavaScript SDK, which includes an `auth` module.
+In order to simplify connecting our web app to our Cognito User Pool and Hosted UI, we'll use Amazon's [aws-amplify](https://www.npmjs.com/package/aws-amplify) JavaScript SDK, which includes an `auth` module.
+
+> NOTE: The [aws-amplify](https://www.npmjs.com/package/aws-amplify) SDK includes all kinds of features we won't use. The docs discuss lots of setup and configuration we don't need to do, since we're only using Cognito.
 
 40. In your `fragments-ui` web app's root folder, run the following command:
 
@@ -168,7 +246,7 @@ npm install --save aws-amplify
 
 If you are using a web framework (React, Angular, Vue), you can also [install the appropriate custom components](https://docs.amplify.aws/lib/auth/getting-started/q/platform/js/#option-1-use-pre-built-ui-components) to use pre-built auth components.
 
-NOTE: some students have reported issues getting the custom React components to work with Amplify (i.e., not using the proper domain, not showing email for sign-up, etc). Make sure you specify the `signUpAttributes` you want to use:
+> NOTE: some students have reported issues getting the custom React components to work with Amplify (i.e., not using the proper domain, not showing email for sign-up, etc). Make sure you specify the `signUpAttributes` you want to use:
 
 ```js
 export default withAuthenticator(App, {
@@ -178,7 +256,7 @@ export default withAuthenticator(App, {
 
 If you can't get it to work, you can always write your own login/logout button components, based on my code below.
 
-If you're not using a web framework, create some simple HTML buttons for `Login` and `Logout`, as well as a place to display the user's `username` once authenticated. Here's a basic sample, but you can make it look like whatever you want:
+If you're not using a web framework, create some simple HTML buttons for `Login` and `Logout`, as well as a place to display the user's `username` once authenticated. Here's a basic sample, but you can make it look like whatever you want (i.e., this is just to get you started):
 
 ```html
 <!DOCTYPE html>
@@ -201,7 +279,7 @@ If you're not using a web framework, create some simple HTML buttons for `Login`
 </html>
 ```
 
-41. In the root of your `fragments-ui` web app repo (i.e., beside your `package.json` file), create an `.env` file to define some [Environment Variables](https://en.wikipedia.org/wiki/Environment_variable). We use an environment file (`.env`) to separate configuration settings from our source code. Our `.env` file will include things like AWS secrets and configuration settings.
+41. In the root of your `fragments-ui` web app repo (i.e., beside your `package.json` file), create an `.env` file to define some [Environment Variables](https://en.wikipedia.org/wiki/Environment_variable). We use an environment file (`.env`) to separate configuration settings from our source code. Our `.env` file will include things like our Cognito configuration settings.
 
 Because an `.env` file often contains secrets, we **never** commit them to git. Our [`.gitignore`](https://git-scm.com/docs/gitignore) tells git which files and folders to ignore in a project. Confirm that your `.gitignore` file includes `.env`. If it doesn't, you can put the following lines at the end of the `.gitignore` file:
 
@@ -212,9 +290,9 @@ Because an `.env` file often contains secrets, we **never** commit them to git. 
 
 Your `.env` file contains lines that look like this: `VARIABLE=VALUE` (NOTE: no spaces, no quotes). It also contains comments, which begin with a `#` character: `# This is a comment`.
 
-A process has access to its environment (variables). If you're using Parcel, it can [automatically read environment variables from an `.env` in the root of the project](https://parceljs.org/features/node-emulation/#environment-variables). You can do something similar in [React](https://create-react-app.dev/docs/adding-custom-environment-variables/) and [Angular](https://www.digitalocean.com/community/tutorials/angular-environment-variables) too. Make sure your chosen web framework can work with environment variables so that you don't have to commit these to git: we never commit `.env` files to git, since they often contain secrets, and we _never_ put hard-coded secrets into source code.
+A process has access to its environment (variables). If you're using Parcel, it can [automatically read environment variables from an `.env` in the root of the project](https://parceljs.org/features/node-emulation/#environment-variables). You can do something similar in [React](https://create-react-app.dev/docs/adding-custom-environment-variables/) and [Angular](https://www.digitalocean.com/community/tutorials/angular-environment-variables) too. Make sure your chosen web framework can work with environment variables so that you don't have to commit these to with our source code.
 
-NOTE: you will need the configuration info that you recorded above for your User Pool and App Client ID (replace `xx...` values below):
+> NOTE: you will need the configuration info that you recorded above for your User Pool and App Client ID (replace `xx...` values below):
 
 ```ini
 # .env
@@ -238,12 +316,12 @@ OAUTH_SIGN_IN_REDIRECT_URL=http://localhost:1234
 OAUTH_SIGN_OUT_REDIRECT_URL=http://localhost:1234
 ```
 
-Also create a `src/auth.js` file to do the [OAuth2 Authorization Code Grant](https://developer.okta.com/blog/2018/04/10/oauth-authorization-code-grant-type). To do so, we first need to configure the `Auth` client with our User Pool details, and provide a way to get the authenticated user's info.
+Also create a `src/auth.js` file to do the [OAuth2 Authorization Code Grant](https://developer.okta.com/blog/2018/04/10/oauth-authorization-code-grant-type). To do so, we first need to configure the `Auth` client with our User Pool details, and provide a way to get the authenticated user's info. We'll use the `process.env` global to access our environment variables:
 
 ```js
 // src/auth.js
 
-import Amplify, { Auth } from 'aws-amplify';
+import { Amplify, Auth } from 'aws-amplify';
 
 // Configure our Auth object to use our Cognito User Pool
 Amplify.configure({
@@ -303,6 +381,12 @@ async function getUser() {
       username,
       idToken,
       accessToken,
+      // Include a simple method to generate headers with our Authorization info
+      authorizationHeaders: (type = 'application/json') => {
+        const headers = { 'Content-Type': type };
+        headers['Authorization'] = `Bearer ${idToken}`;
+        return headers;
+      },
     };
   } catch (err) {
     console.log(err);
@@ -387,7 +471,7 @@ $ git commit -m "..."
 
 ## Secure fragments Routes
 
-Now that we have a way to Authenticate users against our Amazon Cognito User Pool, and a way to get Authorization tokens, it's time to secure our `fragments` microservice routes. We'll add the infrastructure we need to properly authorize users with a Cognito Identity token.
+Now that we have a way to Authenticate users against our Amazon Cognito User Pool, and a way to get Authorization tokens, it's time to secure our `fragments` microservice routes. We'll add the infrastructure we need to properly authorize users with a Cognito **Identity token**.
 
 48. In the root of the `fragments` repo, install the [dotenv](https://www.npmjs.com/package/dotenv) module to your dependencies. We'll use it to read [Environment Variables](https://en.wikipedia.org/wiki/Environment_variable) from an `.env` file, and load the into our node server's environment at startup:
 
@@ -563,8 +647,10 @@ module.exports = (req, res) => {
 
 58. Add the necessary dependencies in order to use a JWT token to secure our Express routes with [Passport.js](https://www.passportjs.org/), including [passport](https://www.npmjs.com/package/passport), [passport-http-bearer](https://www.npmjs.com/package/passport-http-bearer), and [aws-jwt-verify](https://www.npmjs.com/package/aws-jwt-verify)). Our microservice will use Passport.js to parse the `Authorization` header of all incoming requests and look for a `Bearer` token. We'll then verify this token with the **AWS JWT Verifier** module, and make sure that we can trust the user's identity.
 
+> NOTE: the [aws-jwt-verify](https://www.npmjs.com/package/aws-jwt-verify) module currently needs to be set to `2.1.3` vs. `3.x` due to a [bug](https://github.com/awslabs/aws-jwt-verify/issues/66) in how it [interacts with Jest](https://github.com/facebook/jest/issues/12270). Until this is fixed upstream, avoid using the latest version.
+
 ```sh
-npm install --save passport passport-http-bearer aws-jwt-verify
+npm install --save passport passport-http-bearer aws-jwt-verify@2.1.3
 ```
 
 59. Add configuration information to your `.env` so that the **AWS JWT Verifier** knows about your Cognito User Pool (NOTE: use the values you wrote down above for the Amazon Cognito IDs):
@@ -691,8 +777,8 @@ Let's prove that everything works. Our goal is to have a user sign-in via our we
 ```js
 // src/api.js
 
-// fragments microservice API
-const apiUrl = process.env.API_URL;
+// fragments microservice API, defaults to localhost:8080
+const apiUrl = process.env.API_URL || 'http://localhost:8080';
 
 /**
  * Given an authenticated user, request all fragments for this user from the
@@ -703,10 +789,8 @@ export async function getUserFragments(user) {
   console.log('Requesting user fragments data...');
   try {
     const res = await fetch(`${apiUrl}/v1/fragments`, {
-      headers: {
-        // Include the user's ID Token in the request so we're authorized
-        Authorization: `Bearer ${user.idToken}`,
-      },
+      // Generate headers with the proper Authorization bearer token to pass
+      headers: user.authorizationHeaders(),
     });
     if (!res.ok) {
       throw new Error(`${res.status} ${res.statusText}`);
