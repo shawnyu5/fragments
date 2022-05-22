@@ -1,7 +1,8 @@
 import pino, { LoggerOptions } from "pino";
+import { enviroment } from "../enviroments/enviroment";
 
 // Use `info` as our standard log level if not specified
-const options: LoggerOptions = { level: process.env.LOG_LEVEL || "info" };
+const options: LoggerOptions = { level: enviroment?.LOG_LEVEL || "info" };
 
 // If we're doing `debug` logging, make the logs easier to read
 if (options.level === "debug") {
