@@ -8,7 +8,7 @@ import get from "./get";
 const router = express.Router();
 
 // Define our first route, which will be: GET /v1/fragments
-router.get("/fragment", get);
+router.get("/fragments", get);
 
 // Other routes will go here later on...
 

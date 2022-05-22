@@ -1,8 +1,10 @@
 # Lab 2
 
-[fragments](https://github.com/shawnyu5/fragments)
+[fragments repo](https://github.com/shawnyu5/fragments)
 
-[fragments-ui](https://github.com/shawnyu5/fragments-ui)
+[fragments-ui repo](https://github.com/shawnyu5/fragments-ui)
+
+## Screen shots
 
 Not logged in
 
@@ -19,3 +21,15 @@ After clicking login
 After logging in
 
 ![3.3](img/3.3.png)
+
+----------------------------------------------------------
+
+AWS console
+
+![aws_console](img/aws_console.png)
+
+-------------------------------------------------------------
+
+JWT decoder
+
+![jwt_decoder](img/jwt_decoder.png)

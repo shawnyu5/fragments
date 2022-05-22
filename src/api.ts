@@ -22,6 +22,6 @@ export async function getUserFragments(user: any) {
       const data = await res.json();
       logger.info("Got user fragments data", { data });
    } catch (err) {
-      logger.error("Unable to call GET /v1/fragment", { err });
+      logger.error("Unable to call GET /v1/fragments", { err });
    }
 }
