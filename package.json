@@ -6,7 +6,8 @@
    "scripts": {
       "test": "echo \"Error: no test specified\" && exit 1",
       "start": "ts-node .",
-      "dev": "nodemon src/index.ts"
+      "dev": "nodemon src/index.ts",
+      "lint": "tslint -c tslint.json src/**/*.ts"
    },
    "author": "Shawn Yu",
    "license": "ISC",
@@ -21,6 +22,7 @@
       "passport-http-bearer": "^1.0.1",
       "pino": "^7.11.0",
       "ts-node": "^10.7.0",
+      "tslint": "^6.1.3",
       "typescript": "^4.6.4"
    },
    "devDependencies": {
