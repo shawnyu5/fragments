@@ -4,10 +4,12 @@
    "description": "",
    "main": "src/index.ts",
    "scripts": {
-      "test": "echo \"Error: no test specified\" && exit 1",
       "start": "ts-node .",
       "dev": "nodemon src/index.ts",
-      "lint": "tslint -c tslint.json src/**/*.ts"
+      "lint": "tslint -c tslint.json src/**/*.ts",
+      "test": "jest -c jest.config.js --runInBand --watch --",
+      "coverage": "jest -c jest.config.js --runInBand --coverage",
+      "test:watch": "jest -c jest.config.js --runInBand --watch --"
    },
    "author": "Shawn Yu",
    "license": "ISC",
@@ -15,9 +17,9 @@
       "aws-jwt-verify": "^3.0.0",
       "compression": "^1.7.4",
       "cors": "^2.8.5",
+      "dotenv": "^16.0.1",
       "express": "^4.18.1",
       "logger": "^0.0.1",
-      "nodemon": "^2.0.16",
       "passport": "^0.5.3",
       "passport-http-bearer": "^1.0.1",
       "pino": "^7.11.0",
@@ -28,7 +30,11 @@
    "devDependencies": {
       "@types/compression": "^1.7.2",
       "@types/cors": "^2.8.12",
+      "@types/jest": "^27.5.1",
       "@types/logger": "^0.0.1",
-      "@types/passport": "^1.0.7"
+      "@types/passport": "^1.0.7",
+      "jest": "^28.1.0",
+      "nodemon": "^2.0.16",
+      "ts-jest": "^28.0.2"
    }
 }
