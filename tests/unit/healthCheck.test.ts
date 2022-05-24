@@ -5,8 +5,10 @@ import app from "../../src/app";
 
 // Get the version and author from our package.json
 import { version, author } from "../../package.json";
+import { enviroment } from "../../enviroments/enviroment";
 
 describe("/ health check", () => {
+   process.env.NODE_ENV = "development";
    test("should return HTTP 200 response", async () => {
       const res = await request(app).get("/");
       expect(res.statusCode).toBe(200);

@@ -5,8 +5,7 @@
 import passport from "passport";
 const BearerStrategy = require("passport-http-bearer").Strategy;
 import { CognitoJwtVerifier } from "aws-jwt-verify";
-// @ts-ignore
-import { enviroment } from "../enviroments/enviroment";
+import { enviroment } from "../../enviroments/enviroment";
 
 import logger from "../logger";
 
@@ -46,6 +45,7 @@ export function strategy() {
    return new BearerStrategy(async (token: any, done: any) => {
       try {
          // Verify this JWT
+         // @ts-ignore
          const user = await jwtVerifier.verify(token);
          logger.debug({ user }, "verified user token");
 
