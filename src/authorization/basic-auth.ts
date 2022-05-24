@@ -1,9 +1,11 @@
 import auth from "http-auth";
 import passport from "passport";
-import authPassport from "http-auth-passport";
+// @ts-ignore
+const authPassport = require("http-auth-passport");
+import { enviroment } from "../../enviroments/enviroment";
 
 // We expect HTPASSWD_FILE to be defined.
-if (!process.env.HTPASSWD_FILE) {
+if (!enviroment.HTPASSWD_FILE) {
    throw new Error("missing expected env var: HTPASSWD_FILE");
 }
 
@@ -12,11 +14,11 @@ export function strategy() {
    // username/password pair in the Authorization header.
    return authPassport(
       auth.basic({
-         file: process.env.HTPASSWD_FILE,
+         file: enviroment.HTPASSWD_FILE,
       })
    );
 }
 
 export function authenticate() {
-   passport.authenticate("http", { session: false });
+   return passport.authenticate("http", { session: false });
 }

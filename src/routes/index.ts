@@ -2,7 +2,9 @@ import express from "express";
 import api from "./api";
 
 // version and author from package.json
+// @ts-ignore
 import { version, author } from "../../package.json";
+const auth = require("../authorization");
 
 // Create a router that we can use to mount our API
 const router = express.Router();
@@ -10,7 +12,7 @@ const router = express.Router();
 /**
  * Expose all of our API routes on /v1/* to include an API version.
  */
-router.use(`/v1`, api);
+router.use(`/v1`, auth.authenticate(), api);
 
 /**
  * Define a simple health check route. If the server is running
