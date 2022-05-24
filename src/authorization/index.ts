@@ -1,12 +1,14 @@
 import { enviroment } from "../../enviroments/enviroment";
+import logger from "../logger";
 
 // Prefer Amazon Cognito
-if (enviroment.AWS_COGNITO_POOL_ID && enviroment.AWS_COGNITO_CLIENT_ID) {
-   // module.exports.strategy = require("./cognito").strategy;
+if (enviroment.HTPASSWD_FILE && process.env.NODE_ENV !== "production") {
+   logger.debug("Using basic auth for testing");
    module.exports = require("./cognito");
 }
 // Also allow for an .htpasswd file to be used, but not in production
-else if (enviroment.HTPASSWD_FILE && process.env.NODE_ENV !== "production") {
+else if (enviroment.AWS_COGNITO_POOL_ID && enviroment.AWS_COGNITO_CLIENT_ID) {
+   logger.debug("Using AWS Cognito for authentication in production");
    module.exports = require("./basic-auth");
 }
 // In all other cases, we need to stop now and fix our config
