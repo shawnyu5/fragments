@@ -9,10 +9,15 @@ import { CognitoJwtVerifier } from "aws-jwt-verify";
 import { enviroment } from "../enviroments/enviroment";
 
 import logger from "./logger";
+
+if (!(enviroment.AWS_COGNITO_POOL_ID && enviroment.AWS_COGNITO_CLIENT_ID)) {
+   throw new Error(
+      "missing expected env vars: AWS_COGNITO_POOL_ID, AWS_COGNITO_CLIENT_ID"
+   );
+}
 // Create a Cognito JWT Verifier, which will confirm that any JWT we
 // get from a user is valid and something we can trust. See:
 // https://github.com/awslabs/aws-jwt-verify#cognitojwtverifier-verify-parameters
-// @ts-ignore
 const jwtVerifier = CognitoJwtVerifier.create({
    // These variables must be set in the .env
    userPoolId: enviroment.AWS_COGNITO_POOL_ID,

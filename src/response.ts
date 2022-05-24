@@ -19,8 +19,8 @@ export function createSuccessResponse(data?: any) {
  * {
  *   "status": "error",
  *   "error": {
- *     "code": 400,
- *     "message": "invalid request, missing ...",
+ *     "code": code,
+ *     "message": message,
  *   }
  * }
  */
