@@ -8,7 +8,7 @@ import { CognitoJwtVerifier } from "aws-jwt-verify";
 // @ts-ignore
 import { enviroment } from "../enviroments/enviroment";
 
-import logger from "./logger";
+import logger from "../logger";
 
 if (!(enviroment.AWS_COGNITO_POOL_ID && enviroment.AWS_COGNITO_CLIENT_ID)) {
    throw new Error(
