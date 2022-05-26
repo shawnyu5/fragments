@@ -1,7 +1,7 @@
 import auth from "http-auth";
 import passport from "passport";
 // @ts-ignore
-const authPassport = require("http-auth-passport");
+const authPassport = require("http-auth-passport"); // tslint:disable-line
 import { enviroment } from "../../enviroments/enviroment";
 
 // We expect HTPASSWD_FILE to be defined.

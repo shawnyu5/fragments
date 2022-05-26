@@ -4,7 +4,7 @@ import api from "./api";
 // version and author from package.json
 // @ts-ignore
 import { version, author } from "../../package.json";
-const auth = require("../authorization");
+const auth = require("../authorization"); // tslint:disable-line
 
 // Create a router that we can use to mount our API
 const router = express.Router();

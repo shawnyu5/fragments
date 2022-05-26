@@ -3,7 +3,8 @@
 // parsed from the Authorization header (i.e., Bearer Token).
 
 import passport from "passport";
-const BearerStrategy = require("passport-http-bearer").Strategy;
+// const BearerStrategy = require("passport-http-bearer").Strategy;
+import { Strategy as BearerStrategy } from "passport-http-bearer";
 import { CognitoJwtVerifier } from "aws-jwt-verify";
 import { enviroment } from "../../enviroments/enviroment";
 
