@@ -4,7 +4,7 @@ import api from "./api";
 // version and author from package.json
 // @ts-ignore
 import { version, author } from "../../package.json";
-import { createErrorResponse, createSuccessResponse } from "../response";
+import { createSuccessResponse } from "../response";
 const auth = require("../authorization"); // tslint:disable-line
 
 // Create a router that we can use to mount our API
