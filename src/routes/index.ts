@@ -4,6 +4,7 @@ import api from "./api";
 // version and author from package.json
 // @ts-ignore
 import { version, author } from "../../package.json";
+import { createErrorResponse, createSuccessResponse } from "../response";
 const auth = require("../authorization"); // tslint:disable-line
 
 // Create a router that we can use to mount our API
@@ -21,14 +22,15 @@ router.use(`/v1`, auth.authenticate(), api);
 router.get("/", (_, res) => {
    // Client's shouldn't cache this response (always request it fresh)
    res.setHeader("Cache-Control", "no-cache");
-   // Send a 200 'OK' response
-   res.status(200).json({
-      status: "ok",
-      author,
-      // Use your own GitHub URL for this...
-      githubUrl: "https://github.com/shawnyu5/fragments",
-      version,
-   });
+   res.status(200).json(
+      createSuccessResponse({
+         status: "ok",
+         author,
+         // Use your own GitHub URL for this...
+         githubUrl: "https://github.com/shawnyu5/fragments",
+         version,
+      })
+   );
 });
 
 export default router;

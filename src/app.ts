@@ -4,6 +4,7 @@ import passport from "passport";
 import compression from "compression";
 const auth = require("./authorization");
 import cors from "cors";
+import { createErrorResponse } from "./response";
 
 const app = express();
 app.use(cors());
@@ -16,14 +17,7 @@ app.use("/", routes);
 
 // Add 404 middleware to handle any requests for resources that can't be found can't be found
 app.use((req, res) => {
-   // Pass along an error object to the error-handling middleware
-   res.status(404).json({
-      status: "error",
-      error: {
-         message: "not found",
-         code: 404,
-      },
-   });
+   res.status(404).json(createErrorResponse(404, "not found"));
 });
 
 export default app;
