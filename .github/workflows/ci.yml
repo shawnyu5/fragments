@@ -66,15 +66,15 @@ jobs:
         run: |
           touch enviroments/enviroment.ts
           echo -e '
-export const enviroment = {
-   PORT: "${{ secrets.PORT }}",
-   LOG_LEVEL: "${{ secrets.LOG_LEVEL }}",
-   // AWS Amazon Cognito User Pool ID (use your User Pool ID)
-   AWS_COGNITO_POOL_ID: "${{ secrets.AWS_COGNITO_POOL_ID }}",
-   // AWS Amazon Cognito Client App ID (use your Client App ID)
-   AWS_COGNITO_CLIENT_ID: "${{ secrets.AWS_COGNITO_CLIENT_ID }}",
-   API_URL: "http://localhost:8080",
-   HTPASSWD_FILE: "./tests/.htpasswd",
-};
-'
+          export const enviroment = {
+             PORT: "${{ secrets.PORT }}",
+             LOG_LEVEL: "${{ secrets.LOG_LEVEL }}",
+             // AWS Amazon Cognito User Pool ID (use your User Pool ID)
+             AWS_COGNITO_POOL_ID: "${{ secrets.AWS_COGNITO_POOL_ID }}",
+             // AWS Amazon Cognito Client App ID (use your Client App ID)
+             AWS_COGNITO_CLIENT_ID: "${{ secrets.AWS_COGNITO_CLIENT_ID }}",
+             API_URL: "http://localhost:8080",
+             HTPASSWD_FILE: "./tests/.htpasswd",
+          };
+          '
           npm install-ci-test
