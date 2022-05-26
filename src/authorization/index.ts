@@ -4,7 +4,6 @@ import logger from "../logger";
 // Prefer Amazon Cognito
 if (enviroment.HTPASSWD_FILE && process.env.NODE_ENV !== "production") {
    logger.debug("Using basic auth for testing");
-   console.log("Using basic auth for testing");
    module.exports = require("./basic-auth");
 }
 // Also allow for an .htpasswd file to be used, but not in production
