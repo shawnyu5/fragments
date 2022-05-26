@@ -18,6 +18,6 @@ process.on("unhandledRejection", (reason, promise) => {
 });
 
 // Start our server
-app.listen(enviroment.PORT, () => {
+app.listen(enviroment?.PORT, () => {
    logger.info(`Server listening on port ${enviroment.PORT}`);
 });

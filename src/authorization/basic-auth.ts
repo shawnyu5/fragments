@@ -5,7 +5,7 @@ const authPassport = require("http-auth-passport"); // tslint:disable-line
 import { enviroment } from "../../enviroments/enviroment";
 
 // We expect HTPASSWD_FILE to be defined.
-if (!enviroment.HTPASSWD_FILE) {
+if (!enviroment?.HTPASSWD_FILE) {
    throw new Error("missing expected env var: HTPASSWD_FILE");
 }
 
@@ -14,7 +14,7 @@ export function strategy() {
    // username/password pair in the Authorization header.
    return authPassport(
       auth.basic({
-         file: enviroment.HTPASSWD_FILE,
+         file: enviroment?.HTPASSWD_FILE,
       })
    );
 }
