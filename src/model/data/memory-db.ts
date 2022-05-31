@@ -30,7 +30,7 @@ export class MemoryDB {
     * @param {string} secondaryKey
     * @returns Promise
     */
-   put(primaryKey: string, secondaryKey: string, value: string) {
+   put(primaryKey: string, secondaryKey: string, value: any) {
       // if (!(validateKey(primaryKey) && validateKey(secondaryKey))) {
       // throw new Error(
       // `primaryKey and secondaryKey strings are required, got primaryKey=${primaryKey}, secondaryKey=${secondaryKey}`
