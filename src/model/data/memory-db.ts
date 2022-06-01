@@ -6,6 +6,8 @@
 // return typeof key === "string";
 // }
 
+import IFragment from "../../types/fragment";
+
 export class MemoryDB {
    db: any;
    constructor() {
@@ -16,32 +18,27 @@ export class MemoryDB {
     * Gets a value for the given primaryKey and secondaryKey
     * @param {string} primaryKey
     * @param {string} secondaryKey
-    * @returns Promise<any>
+    * @returns A promise with retrieved value
     */
-   get(primaryKey: string, secondaryKey: string) {
+   get(primaryKey: string, secondaryKey: string): Promise<any> {
       const db = this.db;
-      const value = db[primaryKey] && db[primaryKey][secondaryKey];
+      const value: any = db[primaryKey] && db[primaryKey][secondaryKey];
       return Promise.resolve(value);
    }
 
    /**
     * Puts a value into the given primaryKey and secondaryKey
-    * @param {string} primaryKey
-    * @param {string} secondaryKey
-    * @returns Promise
+    * @param primaryKey - The primary key to use for the data.
+    * @param secondaryKey - The secondary key to use for the data.
+    * @param data - The data to store.
+    * @returns Promise if successful
     */
-   put(primaryKey: string, secondaryKey: string, value: any) {
-      // if (!(validateKey(primaryKey) && validateKey(secondaryKey))) {
-      // throw new Error(
-      // `primaryKey and secondaryKey strings are required, got primaryKey=${primaryKey}, secondaryKey=${secondaryKey}`
-      // );
-      // }
-
+   put(primaryKey: string, secondaryKey: string, data: any): Promise<any> {
       const db = this.db;
       // Make sure the `primaryKey` exists, or create
       db[primaryKey] = db[primaryKey] || {};
       // Add the `value` to the `secondaryKey`
-      db[primaryKey][secondaryKey] = value;
+      db[primaryKey][secondaryKey] = data;
       return Promise.resolve();
    }
 
@@ -51,7 +48,7 @@ export class MemoryDB {
     * @param {string} primaryKey
     * @returns Promise<any[]>
     */
-   query(primaryKey: string) {
+   query(primaryKey: string): Promise<any[]> {
       // if (!validateKey(primaryKey)) {
       // throw new Error(
       // `primaryKey string is required, got primaryKey=${primaryKey}`
@@ -70,7 +67,7 @@ export class MemoryDB {
     * @param {string} secondaryKey
     * @returns Promise<any[]>
     */
-   async del(primaryKey: string, secondaryKey: string) {
+   async del(primaryKey: string, secondaryKey: string): Promise<any> {
       // if (!(validateKey(primaryKey) && validateKey(secondaryKey))) {
       // throw new Error(
       // `primaryKey and secondaryKey strings are required, got primaryKey=${primaryKey}, secondaryKey=${secondaryKey}`
