@@ -5,7 +5,9 @@ import api from "./api";
 // @ts-ignore
 import { version, author } from "../../package.json";
 import { createSuccessResponse } from "../response";
-const auth = require("../authorization"); // tslint:disable-line
+// const auth = require("../authorization"); // tslint:disable-line
+// @ts-ignore
+import * as auth from "../authorization";
 
 // Create a router that we can use to mount our API
 const router = express.Router();
@@ -13,6 +15,7 @@ const router = express.Router();
 /**
  * Expose all of our API routes on /v1/* to include an API version.
  */
+// @ts-ignore
 router.use(`/v1`, auth.authenticate(), api);
 
 /**
