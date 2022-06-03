@@ -59,7 +59,7 @@ export class Fragment {
       ownerId: string,
       expand = false
    ): Promise<Array<IFragment>> {
-      return readFragmentData(ownerId, ownerId);
+      return (await readFragmentData(ownerId, ownerId)) || Promise.resolve([]);
    }
 
    /**

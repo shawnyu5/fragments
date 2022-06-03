@@ -41,8 +41,8 @@ export function writeFragmentData(ownerId: string, id: string, value: string) {
  * @param id - fragment id
  * @returns Promise with retrieved fragment
  */
-export function readFragmentData(ownerId: string, id: string) {
-   return data.get(ownerId, id);
+export async function readFragmentData(ownerId: string, id: string) {
+   return await data.get(ownerId, id);
 }
 
 // Get a list of fragment ids/objects for the given user from memory db. Returns a Promise
