@@ -21,6 +21,7 @@ export class Fragment {
    updated?: string | undefined = "";
    type: string = "";
    size: number = 0;
+
    constructor({
       id,
       ownerId,
@@ -34,24 +35,31 @@ export class Fragment {
       created?: string;
       updated?: string;
       type: string;
-      size: number;
+      size?: number;
    }) {
+      if (size < 0) {
+         throw new Error("Fragment size must be >= 0");
+      }
       this.id = id;
       this.ownerId = ownerId;
       this.created = created;
       this.updated = updated;
       this.type = type;
+      Fragment.isSupportedType(this.mimeType);
       this.size = size;
    }
 
    /**
     * Get all fragments (id or full) for the given user
-    * @param {string} ownerId user's hashed email
-    * @param {boolean} expand whether to expand ids to full fragments
-    * @returns Promise<Array<Fragment>>
+    * @param ownerId user's hashed email
+    * @param expand whether to expand ids to full fragments
+    * @returns all fragment for user passed in
     */
-   static async byUser(ownerId, expand = false) {
-      // TODO
+   static async byUser(
+      ownerId: string,
+      expand = false
+   ): Promise<Array<IFragment>> {
+      return readFragmentData(ownerId, ownerId);
    }
 
    /**
@@ -60,7 +68,7 @@ export class Fragment {
     * @param {string} id fragment's id
     * @returns Promise<Fragment>
     */
-   static async byId(ownerId, id) {
+   static async byId(ownerId: any, id: any) {
       // TODO
    }
 
@@ -70,7 +78,7 @@ export class Fragment {
     * @param {string} id fragment's id
     * @returns Promise
     */
-   static delete(ownerId, id) {
+   static delete(ownerId: any, id: any) {
       // TODO
    }
 
@@ -86,16 +94,16 @@ export class Fragment {
     * Gets the fragment's data from the database
     * @returns Promise<Buffer>
     */
-   getData() {
-      // TODO
-   }
+   // getData(): Promise<Buffer> {
+   // // TODO
+   // }
 
    /**
     * Set's the fragment's data in the database
     * @param {Buffer} data
     * @returns Promise
     */
-   async setData(data) {
+   async setData(data: Buffer): Promise<void> {
       // TODO
    }
 
@@ -104,33 +112,40 @@ export class Fragment {
     * "text/html; charset=utf-8" -> "text/html"
     * @returns {string} fragment's mime type (without encoding)
     */
-   get mimeType() {
+   get mimeType(): string {
       const { type } = contentType.parse(this.type);
       return type;
    }
 
    /**
     * Returns true if this fragment is a text/* mime type
-    * @returns {boolean} true if fragment's type is text/*
+    * @returns {boolean} true if fragment's type is text
     */
-   get isText() {
-      // TODO
+   get isText(): boolean {
+      return this.mimeType.startsWith("text/");
    }
 
    /**
     * Returns the formats into which this fragment type can be converted
     * @returns {Array<string>} list of supported mime types
     */
-   get formats() {
-      // TODO
+   get formats(): Array<string> {
+      let supportedType: Array<string> = ["text/plain"];
+      return supportedType;
    }
 
    /**
-    * Returns true if we know how to work with this content type
-    * @param {string} value a Content-Type value (e.g., 'text/plain' or 'text/plain: charset=utf-8')
-    * @returns {boolean} true if we support this Content-Type (i.e., type/subtype)
+    * Check if we know how to work with this content type
+    * @param value a Content-Type value (e.g., 'text/plain' or 'text/plain: charset=utf-8')
+    * @returns true if we support this Content-Type (i.e., type/subtype)
     */
-   static isSupportedType(value) {
-      // TODO
+   static isSupportedType(value: string): boolean | void {
+      let supportedType: Array<string> = ["text/plain"]; // TODO: i feel like this should not be hard coded
+      for (const type of supportedType) {
+         if (type === value) {
+            return true;
+         }
+         throw new Error("Unsupported Content-Type");
+      }
    }
 }

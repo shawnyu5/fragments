@@ -22,6 +22,7 @@
       "http-auth": "^4.1.9",
       "http-auth-passport": "^1.0.6",
       "logger": "^0.0.1",
+      "nanoid": "^3.3.4",
       "passport": "^0.5.3",
       "passport-http-bearer": "^1.0.1",
       "pino": "^7.11.0",
@@ -31,6 +32,7 @@
    },
    "devDependencies": {
       "@types/compression": "^1.7.2",
+      "@types/content-type": "^1.1.5",
       "@types/cors": "^2.8.12",
       "@types/http-auth": "^4.1.1",
       "@types/jest": "^27.5.1",
