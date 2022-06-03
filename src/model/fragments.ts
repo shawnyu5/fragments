@@ -58,18 +58,18 @@ export class Fragment {
    static async byUser(
       ownerId: string,
       expand = false
-   ): Promise<Array<IFragment>> {
+   ): Promise<IFragment | Array<IFragment>> {
       return (await readFragmentData(ownerId, ownerId)) || Promise.resolve([]);
    }
 
    /**
-    * Gets a fragment for the user by the given id.
+    * Gets a fragment object for the user by the given id.
     * @param {string} ownerId user's hashed email
     * @param {string} id fragment's id
     * @returns Promise<Fragment>
     */
-   static async byId(ownerId: any, id: any) {
-      // TODO
+   static async byId(ownerId: string, id: string): Promise<IFragment> {
+      return await readFragment(ownerId, id);
    }
 
    /**
@@ -86,17 +86,21 @@ export class Fragment {
     * Saves the current fragment to the database
     * @returns Promise
     */
-   save() {
-      // TODO
+   async save() {
+      await writeFragment({
+         ownerId: this.ownerId,
+         id: this.id as string,
+         value: this,
+      });
    }
 
    /**
     * Gets the fragment's data from the database
     * @returns Promise<Buffer>
     */
-   // getData(): Promise<Buffer> {
-   // // TODO
-   // }
+   getData(): Promise<any> {
+      return readFragmentData(this.ownerId, this.id as string);
+   }
 
    /**
     * Set's the fragment's data in the database
@@ -104,7 +108,11 @@ export class Fragment {
     * @returns Promise
     */
    async setData(data: Buffer): Promise<void> {
-      // TODO
+      await writeFragmentData({
+         ownerId: this.ownerId,
+         id: this.id as string,
+         value: data,
+      });
    }
 
    /**

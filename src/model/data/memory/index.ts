@@ -20,19 +20,20 @@ export function writeFragment(fragment: IFragment) {
  * @param id - fragment id
  * @returns Promise with retrieved fragment
  */
-export function readFragment(ownerId: string, id: string): Promise<any> {
-   return metadata.get(ownerId, id);
+export async function readFragment(
+   ownerId: string,
+   id: string
+): Promise<IFragment> {
+   return await metadata.get(ownerId, id);
 }
 
 /**
  * Write a fragment's data to memory db. Returns a Promise
- * @param ownerId - owner id
- * @param id - fragment id
- * @param value - fragment data
+ * @param fragment the fragment to write
  * @returns Promise if successful
  */
-export function writeFragmentData(ownerId: string, id: string, value: string) {
-   return data.put(ownerId, id, value);
+export function writeFragmentData(fragment: IFragment): Promise<any> {
+   return data.put(fragment.ownerId, fragment.id, fragment.value);
 }
 
 /**

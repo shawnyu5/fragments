@@ -20,7 +20,7 @@ export class MemoryDB {
     * @param {string} secondaryKey
     * @returns A promise with retrieved value
     */
-   get(primaryKey: string, secondaryKey: string): Promise<any> {
+   get(primaryKey: string, secondaryKey: string): Promise<IFragment> {
       const db = this.db;
       const value: any = db[primaryKey] && db[primaryKey][secondaryKey];
       return Promise.resolve(value);
@@ -46,15 +46,9 @@ export class MemoryDB {
     * Queries the list of values (i.e., secondaryKeys) for the given primaryKey.
     * Always returns an Array, even if no items are found.
     * @param {string} primaryKey
-    * @returns Promise<any[]>
+    * @returns array of fragments
     */
-   query(primaryKey: string): Promise<any[]> {
-      // if (!validateKey(primaryKey)) {
-      // throw new Error(
-      // `primaryKey string is required, got primaryKey=${primaryKey}`
-      // );
-      // }
-
+   query(primaryKey: string): Promise<Array<IFragment>> {
       // No matter what, we always return an array (even if empty)
       const db = this.db;
       const values = db[primaryKey] && Object.values(db[primaryKey]);
@@ -65,15 +59,9 @@ export class MemoryDB {
     * Deletes the value with the given primaryKey and secondaryKey
     * @param {string} primaryKey
     * @param {string} secondaryKey
-    * @returns Promise<any[]>
+    * @returns promise if successful
     */
    async del(primaryKey: string, secondaryKey: string): Promise<any> {
-      // if (!(validateKey(primaryKey) && validateKey(secondaryKey))) {
-      // throw new Error(
-      // `primaryKey and secondaryKey strings are required, got primaryKey=${primaryKey}, secondaryKey=${secondaryKey}`
-      // );
-      // }
-
       // Throw if trying to delete a key that doesn't exist
       if (!(await this.get(primaryKey, secondaryKey))) {
          throw new Error(

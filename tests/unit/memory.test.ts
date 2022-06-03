@@ -22,13 +22,13 @@ describe("Memory", () => {
    });
 
    test("writeFragmentData() should write to a fragment", async () => {
-      await writeFragmentData("1", "1", "test");
+      await writeFragmentData({ id: "1", ownerId: "1", value: "test" });
       let result = await readFragmentData("1", "1");
       expect(result).toBe("test");
    });
 
    test("readFragmentData() should read from a fragment", async () => {
-      await writeFragmentData("1", "1", "test");
+      await writeFragmentData({ id: "1", ownerId: "1", value: "test" });
       let result = await readFragmentData("1", "1");
       expect(result).toBe("test");
    });
