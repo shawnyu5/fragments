@@ -1,12 +1,15 @@
+# Lab 4
+
 [fragments repo](https://github.com/shawnyu5/fragments)
 
 Screenshot of your running EC2 instance details in the AWS Console
 
-![ec2 running in aws](./img/aws_cli_running_ec2.png)
+![ec2_in_aws_terminal](img/ec2_in_aws_terminal.png)
 
 Screenshot of accessing your microservice’s health check running on EC2 via the browser
 
 ![health check from ec2 in browser](./img/ec2_in_browser.png)
+
 Screenshot of accessing your microservice’s health check running on EC2 via curl in a terminal on your local computer
 
 ![health check from ec2 in curl](./img/ec2_curl.png "opt title")
