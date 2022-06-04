@@ -138,7 +138,7 @@ export class Fragment {
     * @returns {Array<string>} list of supported mime types
     */
    get formats(): Array<string> {
-      let supportedType: Array<string> = ["text/plain"];
+      const supportedType: Array<string> = ["text/plain"];
       return supportedType;
    }
 
@@ -148,7 +148,7 @@ export class Fragment {
     * @returns true if we support this Content-Type (i.e., type/subtype)
     */
    static isSupportedType(value: string): boolean | void {
-      let supportedType: Array<string> = ["text/plain"]; // TODO: i feel like this should not be hard coded
+      const supportedType: Array<string> = ["text/plain"]; // TODO: i feel like this should not be hard coded
       for (const type of supportedType) {
          if (type === value) {
             return true;

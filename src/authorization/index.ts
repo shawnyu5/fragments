@@ -1,9 +1,11 @@
 import { enviroment } from "../../enviroments/enviroment";
 import logger from "../logger";
-import * as basic_auth from "./basic-auth";
-import * as cognito from "./cognito";
+// import * as basic_auth from "./basic-auth";
+// import * as cognito from "./cognito";
+
 // the module to be exported
-let mod;
+// let mod;
+
 // Prefer Amazon Cognito
 if (enviroment?.HTPASSWD_FILE && process.env.NODE_ENV !== "production") {
    logger.debug("Using basic auth for testing");

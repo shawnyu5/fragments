@@ -9,6 +9,10 @@
       "new-parens": true,
       "no-arg": true,
       "no-bitwise": true,
+      "array-type": [
+         true,
+         "generic"
+      ],
       "no-conditional-assignment": true,
       "no-consecutive-blank-lines": false,
       "jest": true,
