@@ -1,5 +1,10 @@
 import { Fragment } from "../../src/model/fragments";
-// Wait for a certain number of ms. Returns a Promise.
+
+/**
+ * Wait for a certain milliseconds
+ * @param ms - milliseconds
+ * @returns A promise that resolves after ms milliseconds.
+ */
 async function wait(ms = 10) {
    return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -207,21 +212,25 @@ describe("Fragment class", () => {
          expect(await fragment2.getData?.()).toEqual(data);
       });
 
-      // test("save() updates the updated date/time of a fragment", async () => {
-      // const ownerId = "7777";
-      // const fragment = new Fragment({
-      // ownerId,
-      // type: "text/plain",
-      // size: 0,
-      // });
-      // const modified1 = fragment.updated;
-      // await wait();
-      // await fragment.save();
-      // const fragment2 = await Fragment.byId(ownerId, fragment.id);
-      // expect(Date.parse(fragment2.updated)).toBeGreaterThan(
-      // Date.parse(modified1)
-      // );
-      // });
+      test("save() updates the updated date/time of a fragment", async () => {
+         const ownerId = "7777";
+         const fragment = new Fragment({
+            ownerId,
+            type: "text/plain",
+            size: 0,
+         });
+         const modified1 = fragment.updated;
+         await wait();
+         await fragment.save();
+         const fragment2 = (await Fragment.byId(
+            ownerId,
+            fragment.id as string
+         )) as Fragment;
+         console.log("(anon)#(anon)#(anon) fragment2: %s", fragment2); // __AUTO_GENERATED_PRINT_VAR__
+         expect(Date.parse(fragment2.updated as string)).toBeGreaterThan(
+            Date.parse(modified1 as string)
+         );
+      });
 
       // test("setData() updates the updated date/time of a fragment", async () => {
       // const data = Buffer.from("hello");

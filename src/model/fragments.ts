@@ -25,8 +25,8 @@ export class Fragment {
    constructor({
       id,
       ownerId,
-      created,
-      updated,
+      created = new Date().toISOString(),
+      updated = new Date().toISOString(),
       type,
       size = 0,
    }: {
@@ -87,6 +87,8 @@ export class Fragment {
     * @returns Promise
     */
    async save() {
+      // update updated timestamp ????
+      this.updated = new Date().toISOString();
       await writeFragment({
          ownerId: this.ownerId,
          id: this.id as string,
