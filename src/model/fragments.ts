@@ -17,8 +17,8 @@ import {
 export class Fragment {
    id: string | undefined = "";
    ownerId: string = "";
-   created?: string | undefined = "";
-   updated?: string | undefined = "";
+   created: string = "";
+   updated: string = "";
    type: string = "";
    size: number = 0;
 
@@ -68,8 +68,8 @@ export class Fragment {
     * @param {string} id fragment's id
     * @returns Promise<Fragment>
     */
-   static async byId(ownerId: string, id: string): Promise<IFragment> {
-      return await readFragment(ownerId, id);
+   static async byId(ownerId: string, id: string): Promise<Fragment> {
+      return (await readFragment(ownerId, id)) as Fragment;
    }
 
    /**
@@ -110,6 +110,7 @@ export class Fragment {
     * @returns Promise
     */
    async setData(data: Buffer): Promise<void> {
+      this.updated = new Date().toISOString();
       await writeFragmentData({
          ownerId: this.ownerId,
          id: this.id as string,

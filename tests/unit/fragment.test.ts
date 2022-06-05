@@ -226,30 +226,29 @@ describe("Fragment class", () => {
             ownerId,
             fragment.id as string
          )) as Fragment;
-         console.log("(anon)#(anon)#(anon) fragment2: %s", fragment2); // __AUTO_GENERATED_PRINT_VAR__
          expect(Date.parse(fragment2.updated as string)).toBeGreaterThan(
             Date.parse(modified1 as string)
          );
       });
 
-      // test("setData() updates the updated date/time of a fragment", async () => {
-      // const data = Buffer.from("hello");
-      // const ownerId = "7777";
-      // const fragment = new Fragment({
-      // ownerId,
-      // type: "text/plain",
-      // size: 0,
-      // });
-      // await fragment.save();
-      // const modified1 = fragment.updated;
-      // await wait();
-      // await fragment.setData(data);
-      // await wait();
-      // const fragment2 = await Fragment.byId(ownerId, fragment.id);
-      // expect(Date.parse(fragment2.updated)).toBeGreaterThan(
-      // Date.parse(modified1)
-      // );
-      // });
+      test("setData() updates the updated date/time of a fragment", async () => {
+         const data = Buffer.from("hello");
+         const ownerId = "7777";
+         const fragment = new Fragment({
+            ownerId,
+            type: "text/plain",
+            size: 0,
+         });
+         await fragment.save();
+         const modified1 = fragment.updated;
+         await wait();
+         await fragment.setData(data);
+         await wait();
+         const fragment2 = await Fragment.byId(ownerId, fragment.id as string);
+         expect(Date.parse(fragment2.updated)).toBeGreaterThan(
+            Date.parse(modified1)
+         );
+      });
 
       // test("a fragment is added to the list of a user's fragments", async () => {
       // const data = Buffer.from("hello");
