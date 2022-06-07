@@ -3,6 +3,7 @@ import passport from "passport";
 // @ts-ignore
 import authPassport from "http-auth-passport"; // tslint:disable-line
 import { enviroment } from "../../enviroments/enviroment";
+import { authorize } from "./authorize-middleware";
 
 // We expect HTPASSWD_FILE to be defined.
 if (!enviroment?.HTPASSWD_FILE) {
@@ -20,5 +21,6 @@ export function strategy() {
 }
 
 export function authenticate() {
-   return passport.authenticate("http", { session: false });
+   // return passport.authenticate("http", { session: false });
+   return authorize("http");
 }

@@ -6,7 +6,7 @@ import logger from "../logger";
 
 /**
  * @param {'bearer' | 'http'} strategyName - the passport strategy to use
- * @returns {Function} - the middleware function to use for authentication
+ * @returns {Function} the middleware function to use for authentication
  */
 export function authorize(strategyName: "bearer" | "http"): Function {
    return function (req: any, res: any, next: any) {

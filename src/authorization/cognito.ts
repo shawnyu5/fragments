@@ -7,6 +7,7 @@ import passport from "passport";
 import { Strategy as BearerStrategy } from "passport-http-bearer";
 import { CognitoJwtVerifier } from "aws-jwt-verify";
 import { enviroment } from "../../enviroments/enviroment";
+import { authorize } from "./authorize-middleware";
 
 import logger from "../logger";
 
@@ -60,5 +61,6 @@ export function strategy() {
 }
 
 export function authenticate() {
-   passport.authenticate("bearer", { session: false });
+   // return passport.authenticate("bearer", { session: false });
+   return authorize("bearer");
 }
