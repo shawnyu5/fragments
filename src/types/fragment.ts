@@ -1,5 +1,8 @@
 export default interface IFragment {
+   id?: string;
    ownerId: string;
-   id: string;
-   value?: any;
+   created?: string;
+   updated?: string;
+   type: string;
+   size?: number;
 }

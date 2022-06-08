@@ -3,6 +3,7 @@ import { nanoid } from "nanoid";
 // Use https://www.npmjs.com/package/content-type to create/parse Content-Type headers
 import contentType from "content-type";
 import IFragment from "../types/fragment";
+import logger from "../logger";
 
 // Functions for working with fragment metadata/data using our DB
 import {
@@ -15,7 +16,7 @@ import {
 } from "./data";
 
 export class Fragment {
-   id: string | undefined = "";
+   id: string = "";
    ownerId: string = "";
    created: string = "";
    updated: string = "";
@@ -40,12 +41,14 @@ export class Fragment {
       if (size < 0) {
          throw new Error("Fragment size must be >= 0");
       }
-      this.id = id;
+      this.id = id || nanoid(); // either passed in or generated
       this.ownerId = ownerId;
       this.created = created;
       this.updated = updated;
       this.type = type;
-      Fragment.isSupportedType(this.mimeType);
+      if (!Fragment.isSupportedType(this.mimeType)) {
+         throw new Error(`Unsupported type: ${this.mimeType}`);
+      }
       this.size = size;
    }
 
@@ -58,8 +61,12 @@ export class Fragment {
    static async byUser(
       ownerId: string,
       expand = false
-   ): Promise<IFragment | Array<IFragment>> {
-      return (await readFragmentData(ownerId, ownerId)) || Promise.resolve([]);
+   ): Promise<Array<IFragment | string | undefined>> {
+      // console.log(
+      // "Fragment#byUser await listFragments(ownerId, expand): %s",
+      // await listFragments(ownerId, expand)
+      // ); // __AUTO_GENERATED_PRINT_VAR__
+      return await listFragments(ownerId, expand);
    }
 
    /**
@@ -78,8 +85,8 @@ export class Fragment {
     * @param {string} id fragment's id
     * @returns Promise
     */
-   static delete(ownerId: any, id: any) {
-      // TODO
+   static async delete(ownerId: any, id: any) {
+      return deleteFragment(ownerId, id);
    }
 
    /**
@@ -87,7 +94,6 @@ export class Fragment {
     * @returns Promise
     */
    async save() {
-      // update updated timestamp ????
       this.updated = new Date().toISOString();
       await writeFragment({
          ownerId: this.ownerId,
@@ -111,6 +117,7 @@ export class Fragment {
     */
    async setData(data: Buffer): Promise<void> {
       this.updated = new Date().toISOString();
+      this.size = data.length;
       await writeFragmentData({
          ownerId: this.ownerId,
          id: this.id as string,
@@ -151,12 +158,15 @@ export class Fragment {
     * @returns true if we support this Content-Type (i.e., type/subtype)
     */
    static isSupportedType(value: string): boolean | void {
-      const supportedType: Array<string> = ["text/plain"]; // TODO: i feel like this should not be hard coded
+      const supportedType: Array<string> = [
+         "text/plain",
+         "text/plain; charset=utf-8",
+      ]; // TODO: i feel like this should not be hard coded
       for (const type of supportedType) {
          if (type === value) {
             return true;
          }
-         throw new Error("Unsupported Content-Type");
       }
+      return false;
    }
 }

@@ -5,13 +5,19 @@ import { MemoryDB } from "../memory-db";
 const data: MemoryDB = new MemoryDB();
 const metadata: MemoryDB = new MemoryDB();
 
+interface Metadata {
+   ownerId: string;
+   id: string;
+   value: any;
+}
+
 /**
  * Write a fragment's metadata to memory db. Returns a Promise
  * @param fragment - fragment to write
  * @returns Promise if successful
  */
-export function writeFragment(fragment: IFragment) {
-   return metadata.put(fragment.ownerId, fragment.id, fragment.value);
+export async function writeFragment(fragment: Metadata): Promise<void> {
+   return await metadata.put(fragment.ownerId, fragment.id, fragment.value);
 }
 
 /**
@@ -32,7 +38,7 @@ export async function readFragment(
  * @param fragment the fragment to write
  * @returns Promise if successful
  */
-export function writeFragmentData(fragment: IFragment): Promise<any> {
+export function writeFragmentData(fragment: Metadata): Promise<any> {
    return data.put(fragment.ownerId, fragment.id, fragment.value);
 }
 
@@ -48,7 +54,9 @@ export async function readFragmentData(ownerId: string, id: string) {
 
 // Get a list of fragment ids/objects for the given user from memory db. Returns a Promise
 export async function listFragments(ownerId: string, expand = false) {
+   // console.log("listFragments ownerId: %s", ownerId); // __AUTO_GENERATED_PRINT_VAR__
    const fragments = await metadata.query(ownerId);
+   // console.log("listFragments fragments: %s", JSON.stringify(fragments)); // __AUTO_GENERATED_PRINT_VAR__
 
    // If we don't get anything back, or are supposed to give expanded fragments, return
    if (expand || !fragments) {
@@ -56,7 +64,12 @@ export async function listFragments(ownerId: string, expand = false) {
    }
 
    // Otherwise, map to only send back the ids
-   return fragments.map((fragment) => fragment.id);
+   let ids = fragments.map((fragment: IFragment) => {
+      // console.log("mapping fragments...");
+      // console.log("listFragments#(anon) fragment?.id;: %s", fragment?.id); // __AUTO_GENERATED_PRINT_VAR__
+      return fragment?.id;
+   });
+   return ids;
 }
 
 // Delete a fragment's metadata and data from memory db. Returns a Promise

@@ -39,6 +39,7 @@ export class MemoryDB {
       db[primaryKey] = db[primaryKey] || {};
       // Add the `value` to the `secondaryKey`
       db[primaryKey][secondaryKey] = data;
+      // console.log(db[primaryKey][secondaryKey]);
       return Promise.resolve();
    }
 
@@ -52,6 +53,7 @@ export class MemoryDB {
       // No matter what, we always return an array (even if empty)
       const db = this.db;
       const values = db[primaryKey] && Object.values(db[primaryKey]);
+      // console.log("MemoryDB#query values: %s", JSON.stringify(values)); // __AUTO_GENERATED_PRINT_VAR__
       return Promise.resolve([].concat(values));
    }
 
