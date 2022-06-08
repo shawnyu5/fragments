@@ -4,7 +4,17 @@ import { nanoid } from "nanoid";
 import contentType from "content-type";
 import IFragment from "../types/fragment";
 import logger from "../logger";
+import crypto from "crypto";
 
+/**
+ * @param string - a string to be hashed
+ * @returns the string hased with the SHA-256 algorithm
+ */
+function hash(string: string) {
+   const hash = crypto.createHash("sha256");
+   hash.update(string);
+   return hash.digest("hex");
+}
 // Functions for working with fragment metadata/data using our DB
 import {
    readFragment,
@@ -42,7 +52,7 @@ export class Fragment {
          throw new Error("Fragment size must be >= 0");
       }
       this.id = id || nanoid(); // either passed in or generated
-      this.ownerId = ownerId;
+      this.ownerId = hash(ownerId);
       this.created = created;
       this.updated = updated;
       this.type = type;
@@ -62,7 +72,7 @@ export class Fragment {
       ownerId: string,
       expand = false
    ): Promise<Array<IFragment | string | undefined>> {
-      return await listFragments(ownerId, expand);
+      return await listFragments(hash(ownerId), expand);
    }
 
    /**
@@ -72,7 +82,7 @@ export class Fragment {
     * @returns Promise<Fragment>
     */
    static async byId(ownerId: string, id: string): Promise<Fragment> {
-      return (await readFragment(ownerId, id)) as Fragment;
+      return (await readFragment(hash(ownerId), id)) as Fragment;
    }
 
    /**
@@ -83,7 +93,7 @@ export class Fragment {
     */
    static async delete(ownerId: any, id: any) {
       logger.info(`Deleting fragment id: ${id}`);
-      return deleteFragment(ownerId, id);
+      return deleteFragment(hash(ownerId), id);
    }
 
    /**
