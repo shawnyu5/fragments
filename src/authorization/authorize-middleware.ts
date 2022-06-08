@@ -9,7 +9,7 @@ import logger from "../logger";
  * @returns {Function} the middleware function to use for authentication
  */
 export function authorize(
-   strategyName: "bearer" | "http"
+   strategyName: string
 ): (req: any, res: any, next: any) => void {
    return (req: any, res: any, next: any): void => {
       /**
