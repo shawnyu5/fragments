@@ -8,8 +8,10 @@ import logger from "../logger";
  * @param {'bearer' | 'http'} strategyName - the passport strategy to use
  * @returns {Function} the middleware function to use for authentication
  */
-export function authorize(strategyName: "bearer" | "http"): Function {
-   return function (req: any, res: any, next: any) {
+export function authorize(
+   strategyName: "bearer" | "http"
+): (req: any, res: any, next: any) => void {
+   return (req: any, res: any, next: any): void => {
       /**
        * Define a custom callback to run after the user has been authenticated
        * where we can modify the way that errors are handled, and hash emails.
