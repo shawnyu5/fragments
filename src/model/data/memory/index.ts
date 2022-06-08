@@ -1,5 +1,6 @@
 import IFragment from "../../../types/fragment";
 import { MemoryDB } from "../memory-db";
+import logger from "../../../logger";
 
 // Create two in-memory databases: one for fragment metadata and the other for raw data
 const data: MemoryDB = new MemoryDB();

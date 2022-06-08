@@ -62,10 +62,6 @@ export class Fragment {
       ownerId: string,
       expand = false
    ): Promise<Array<IFragment | string | undefined>> {
-      // console.log(
-      // "Fragment#byUser await listFragments(ownerId, expand): %s",
-      // await listFragments(ownerId, expand)
-      // ); // __AUTO_GENERATED_PRINT_VAR__
       return await listFragments(ownerId, expand);
    }
 
@@ -86,6 +82,7 @@ export class Fragment {
     * @returns Promise
     */
    static async delete(ownerId: any, id: any) {
+      logger.info(`Deleting fragment id: ${id}`);
       return deleteFragment(ownerId, id);
    }
 
@@ -161,7 +158,7 @@ export class Fragment {
       const supportedType: Array<string> = [
          "text/plain",
          "text/plain; charset=utf-8",
-      ]; // TODO: i feel like this should not be hard coded
+      ];
       for (const type of supportedType) {
          if (type === value) {
             return true;

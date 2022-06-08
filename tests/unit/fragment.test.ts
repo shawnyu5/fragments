@@ -174,7 +174,7 @@ describe("Fragment class", () => {
             type: "text/plain; charset=utf-8",
             size: 0,
          });
-         // expect(fragment.isText).toBe(true);
+         expect(fragment.isText).toBe(true);
       });
    });
 
@@ -277,15 +277,6 @@ describe("Fragment class", () => {
 
          expect(await Fragment.byUser(ownerId, true)).toEqual([fragment]);
       });
-
-      // test("setData() throws if not give a Buffer", () => {
-      // const fragment = new Fragment({
-      // ownerId: "123",
-      // type: "text/plain",
-      // size: 0,
-      // });
-      // expect(() => fragment.setData()).rejects.toThrow();
-      // });
 
       test("setData() updates the fragment size", async () => {
          const fragment = new Fragment({
