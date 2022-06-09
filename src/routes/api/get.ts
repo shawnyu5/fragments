@@ -1,8 +1,14 @@
+import { Fragment } from "../../model/fragments";
 import { createSuccessResponse } from "../../response";
 /**
  * Get a list of fragments for the current user
  */
-export default (req: Express.Request, res: Express.Response) => {
-   // @ts-ignore
-   res.status(200).json(createSuccessResponse({ fragments: [] }));
-};
+export async function fragments(req: any, res: any) {
+   const user = new Buffer(req.get("authorization").split(" ")[1], "base64")
+      .toString()
+      .split(":")[0];
+
+   let fragments = await Fragment.byUser(user, true);
+
+   res.status(201).json(createSuccessResponse({ fragments: fragments }));
+}

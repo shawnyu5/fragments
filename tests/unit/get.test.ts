@@ -1,6 +1,7 @@
 import request from "supertest";
 // import { enviroment } from "../../enviroments/enviroment";
 import app from "../../src/app";
+import { Fragment } from "../../src/model/fragments";
 
 describe("GET /v1/fragments", () => {
    // If the request is missing the Authorization header, it should be forbidden
@@ -20,10 +21,24 @@ describe("GET /v1/fragments", () => {
          .get("/v1/fragments")
          .auth("user1@email.com", "password1");
 
-      expect(res.statusCode).toBe(200);
+      expect(res.statusCode).toBe(201);
       expect(res.body.status).toBe("ok");
       expect(Array.isArray(res.body.fragments)).toBe(true);
    });
 
-   // TODO: we'll need to add tests to check the contents of the fragments array later
+   test("authenticated users get a fragments array with their fragments", async () => {
+      const fragment = new Fragment({
+         ownerId: "user1@email.com",
+         type: "text/plain",
+      });
+      await fragment.save();
+
+      const res = await request(app)
+         .get("/v1/fragments")
+         .auth("user1@email.com", "password1");
+
+      const body = res.body;
+      expect(body.fragments.length).toBe(1);
+      expect(body.fragments).toContainEqual(fragment);
+   });
 });

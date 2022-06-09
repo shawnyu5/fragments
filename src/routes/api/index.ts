@@ -4,8 +4,8 @@
 import express from "express";
 import { Fragment } from "../../model/fragments";
 import contentType from "content-type";
-import get from "./get";
-import post from "./post";
+import * as get from "./get";
+import * as post from "./post";
 
 // Support sending various Content-Types on the body up to 5M in size
 function rawBody() {
@@ -26,7 +26,7 @@ function rawBody() {
 const router = express.Router();
 
 // Define our first route, which will be: GET /v1/fragments
-router.get("/fragments", get);
-router.post("/fragments", rawBody(), post);
+router.get("/fragments", get.fragments);
+router.post("/fragments", rawBody(), post.fragment);
 
 export default router;

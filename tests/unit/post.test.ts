@@ -11,6 +11,5 @@ describe("POST /v1/fragments", () => {
 
       expect(response.status).toBe(201);
       expect(response.text).toBeTruthy();
-      console.log("(anon)#(anon) response.body: %s", response.text); // __AUTO_GENERATED_PRINT_VAR__
    });
 });

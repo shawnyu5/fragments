@@ -7,6 +7,7 @@ import logger from "../logger";
 import crypto from "crypto";
 
 /**
+ * hashes a string using SHA256
  * @param string - a string to be hashed
  * @returns the string hased with the SHA-256 algorithm
  */
@@ -72,7 +73,9 @@ export class Fragment {
       ownerId: string,
       expand = false
    ): Promise<Array<IFragment | string | undefined>> {
-      return await listFragments(hash(ownerId), expand);
+      const f = await listFragments(hash(ownerId), expand);
+      // console.log("Fragment#byUser f: %s", JSON.stringify(f)); // __AUTO_GENERATED_PRINT_VAR__
+      return f;
    }
 
    /**
