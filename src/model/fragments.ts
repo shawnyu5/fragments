@@ -80,7 +80,7 @@ export class Fragment {
 
    /**
     * Gets a fragment object for the user by the given id.
-    * @param {string} ownerId user's hashed email
+    * @param {string} ownerId user's email in plain text
     * @param {string} id fragment's id
     * @returns Promise<Fragment>
     */

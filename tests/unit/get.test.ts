@@ -42,3 +42,29 @@ describe("GET /v1/fragments", () => {
       expect(body.fragments).toContainEqual(fragment);
    });
 });
+
+describe("GET /v1/fragments/:id", () => {
+   test("unauthenticated requests are denied", () => {
+      request(app).get("/v1/fragments").expect(401);
+   });
+
+   test("authenicated users get their fragments", async () => {
+      // create a new fragment and save it
+      const ownerId = "user1@email.com";
+      const fragment = new Fragment({
+         ownerId: ownerId,
+         type: "text/plain",
+      });
+      await fragment.save();
+      const id = fragment.id;
+      const res = await request(app)
+         .get(`/v1/fragments/${id}`)
+         .auth("user1@email.com", "password1");
+
+      const body = JSON.parse(res.text);
+      // check we got a fragment back
+      expect(body).toBeTruthy();
+      // check the fragment is the one we created
+      expect(body.fragments.id).toBe(id);
+   });
+});

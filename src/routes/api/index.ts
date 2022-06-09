@@ -28,5 +28,6 @@ const router = express.Router();
 // Define our first route, which will be: GET /v1/fragments
 router.get("/fragments", get.fragments);
 router.post("/fragments", rawBody(), post.fragment);
+router.get("/fragments/:id", get.fragmentsWithId);
 
 export default router;
