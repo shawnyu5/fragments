@@ -17,15 +17,10 @@ export async function fragment(req: any, res: any) {
    // @ts-ignore
    const id = newFragment[0]?.id;
 
-   let message = `
-HTTP/1.1 201 Created
-Location: ${enviroment.API_URL}/v1/fragments/${id}
-Content-Type: application/json; charset=utf-8
-
-${JSON.stringify(
-   createSuccessResponse({ Fragments: newFragment[0] }),
-   null,
-   2
-)}`;
+   let message = `${JSON.stringify(
+      createSuccessResponse({ Fragments: newFragment[0] }),
+      null,
+      2
+   )}`;
    res.status(201).send(message);
 }
