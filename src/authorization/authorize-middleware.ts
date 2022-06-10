@@ -18,7 +18,7 @@ export function authorize(
        * @param {Error} err - an error object
        * @param {string} email - an authenticated user's email address
        */
-      function callback(err: any, email: any) {
+      function callback(err: any, email: string) {
          // Something failed, let the the error handling middleware deal with it
          if (err) {
             logger.warn({ err }, "error authenticating user");
@@ -29,6 +29,7 @@ export function authorize(
 
          // Not authorized, return a 401
          if (!email) {
+            logger.error({ email }, "user not authorized");
             return res
                .status(401)
                .json(createErrorResponse(401, "Unauthorized"));
