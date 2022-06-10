@@ -74,7 +74,6 @@ export class Fragment {
       expand = false
    ): Promise<Array<IFragment | string | undefined>> {
       const f = await listFragments(hash(ownerId), expand);
-      // console.log("Fragment#byUser f: %s", JSON.stringify(f)); // __AUTO_GENERATED_PRINT_VAR__
       return f;
    }
 

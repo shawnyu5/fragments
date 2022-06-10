@@ -2,7 +2,6 @@ import { enviroment } from "../../enviroments/enviroment";
 import logger from "../logger";
 
 if (!enviroment.PRODUCTION) {
-   console.log("Using basic auth for testing");
    logger.info("Using basic auth for testing");
    // NOTE: needed to disable linting since basic auth uses module.exports
    module.exports = require("./basic-auth"); // tslint:disable-line

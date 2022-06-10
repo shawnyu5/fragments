@@ -1,5 +1,4 @@
 import { Fragment } from "../../model/fragments";
-import { enviroment } from "../../../enviroments/enviroment";
 import { createSuccessResponse } from "../../response";
 
 /**
@@ -14,8 +13,6 @@ export async function fragment(req: any, res: any) {
    await fragment.save();
 
    const newFragment = await Fragment.byUser(user, true);
-   // @ts-ignore
-   const id = newFragment[0]?.id;
 
    let message = `${JSON.stringify(
       createSuccessResponse({ Fragments: newFragment[0] }),

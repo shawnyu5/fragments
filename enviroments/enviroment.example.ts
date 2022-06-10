@@ -1,4 +1,5 @@
 export const enviroment = {
+   PORT: 8080,
    LOG_LEVEL: "info",
    // AWS Amazon Cognito User Pool ID (use your User Pool ID)
    AWS_COGNITO_POOL_ID: "",
