@@ -62,5 +62,5 @@ export function strategy() {
 
 export function authenticate() {
    // return passport.authenticate("bearer", { session: false });
-   return authorize({ strategyName: "bearer" });
+   return authorize("bearer");
 }
