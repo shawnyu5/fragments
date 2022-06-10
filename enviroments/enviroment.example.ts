@@ -5,7 +5,7 @@ export const enviroment = {
    AWS_COGNITO_POOL_ID: "",
    // AWS Amazon Cognito Client App ID (use your Client App ID)
    AWS_COGNITO_CLIENT_ID: "",
-   API_URL: "",
    // location os .htpasswd file
    HTPASSWD_FILE: "",
+   PRODUCTION: true,
 };
