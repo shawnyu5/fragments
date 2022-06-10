@@ -44,8 +44,8 @@ describe("GET /v1/fragments", () => {
 });
 
 describe("GET /v1/fragments/:id", () => {
-   test("unauthenticated requests are denied", () => {
-      request(app).get("/v1/fragments").expect(401);
+   test("unauthenticated requests are denied", async () => {
+      await request(app).get("/v1/fragments").expect(401);
    });
 
    test("authenicated users get their fragments", async () => {

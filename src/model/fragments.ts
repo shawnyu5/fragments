@@ -171,6 +171,7 @@ export class Fragment {
       const supportedType: Array<string> = [
          "text/plain",
          "text/plain; charset=utf-8",
+         "application/json",
       ];
       for (const type of supportedType) {
          if (type === value) {
