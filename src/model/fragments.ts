@@ -8,13 +8,13 @@ import crypto from "crypto";
 
 /**
  * hashes a string using SHA256
- * @param string - a string to be hashed
+ * @param str - a string to be hashed
  * @returns the string hased with the SHA-256 algorithm
  */
-function hash(string: string) {
-   const hash = crypto.createHash("sha256");
-   hash.update(string);
-   return hash.digest("hex");
+function hash(str: string) {
+   const hashString = crypto.createHash("sha256");
+   hashString.update(str);
+   return hashString.digest("hex");
 }
 // Functions for working with fragment metadata/data using our DB
 import {
