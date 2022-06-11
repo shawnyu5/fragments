@@ -1,3 +1,4 @@
+import logger from "../../logger";
 import { Fragment } from "../../model/fragments";
 import { createSuccessResponse } from "../../response";
 
@@ -19,5 +20,6 @@ export async function fragment(req: any, res: any) {
       null,
       2
    )}`;
+   logger.info(message);
    res.status(201).send(message);
 }

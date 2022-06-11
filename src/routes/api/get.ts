@@ -9,6 +9,7 @@ export async function fragments(req: any, res: any) {
       .split(":")[0];
 
    let fragments = await Fragment.byUser(user, true);
+   res.set("Access-Control-Allow-Origin", "*");
 
    res.status(201).json(createSuccessResponse({ fragments: fragments }));
 }
