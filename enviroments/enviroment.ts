@@ -1,5 +1,6 @@
 import * as dotenv from "dotenv";
 dotenv.config();
+
 export const enviroment = {
    PORT: process.env.PORT || 8080,
    LOG_LEVEL: process.env.LOG_LEVEL || "info",

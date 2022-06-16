@@ -33,6 +33,8 @@ COPY ./src ./src
 # copy over enviroment.ts
 COPY ./enviroments/ ./enviroments/
 
+COPY ./tests/.htpasswd ./tests/.htpasswd
+
 # Start the container by running our server
 CMD npm start
 
