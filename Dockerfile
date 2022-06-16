@@ -30,9 +30,11 @@ RUN npm install
 # Copy src to /app/src/
 COPY ./src ./src
 
+# copy over enviroment.ts
+COPY ./enviroments/ ./enviroments/
+
 # Start the container by running our server
 CMD npm start
 
 # We run our service on port 8080, and have it accessible on port 8080 from outside the container
 EXPOSE 8080
-
