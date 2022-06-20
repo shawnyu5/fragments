@@ -1,8 +1,8 @@
-// @ts-ignore
-import { enviroment } from "../enviroments/enviroment";
+import * as dotenv from "dotenv";
 import logger from "./logger";
+dotenv.config();
 // fragments microservice API, defaults to localhost:8080
-const apiUrl = enviroment?.API_URL || "http://localhost:8080";
+const apiUrl = process.env.API_URL || "http://localhost:8080";
 
 /**
  * Given an authenticated user, request all fragments for this user from the

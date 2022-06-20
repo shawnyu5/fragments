@@ -127,6 +127,7 @@ export class Fragment {
    async setData(data: Buffer): Promise<void> {
       this.updated = new Date().toISOString();
       this.size = data.length;
+      this.save();
       await writeFragmentData({
          ownerId: this.ownerId,
          id: this.id as string,

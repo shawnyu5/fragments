@@ -5,7 +5,6 @@ import app from "../../src/app";
 
 // Get the version and author from our package.json
 import { version, author } from "../../package.json";
-import { enviroment } from "../../enviroments/enviroment";
 
 describe("/ health check", () => {
    process.env.NODE_ENV = "development";

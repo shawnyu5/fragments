@@ -3,12 +3,11 @@
 // parsed from the Authorization header (i.e., Bearer Token).
 import { Strategy as BearerStrategy } from "passport-http-bearer";
 import { CognitoJwtVerifier } from "aws-jwt-verify";
-import { enviroment } from "../../enviroments/enviroment";
 import { authorize } from "./authorize-middleware";
 
 import logger from "../logger";
 
-if (!(enviroment?.AWS_COGNITO_POOL_ID && enviroment?.AWS_COGNITO_CLIENT_ID)) {
+if (!(process.env.AWS_COGNITO_POOL_ID && process.env.AWS_COGNITO_CLIENT_ID)) {
    throw new Error(
       "missing expected env vars: AWS_COGNITO_POOL_ID, AWS_COGNITO_CLIENT_ID"
    );
@@ -18,8 +17,8 @@ if (!(enviroment?.AWS_COGNITO_POOL_ID && enviroment?.AWS_COGNITO_CLIENT_ID)) {
 // https://github.com/awslabs/aws-jwt-verify#cognitojwtverifier-verify-parameters
 const jwtVerifier = CognitoJwtVerifier.create({
    // These variables must be set in the .env
-   userPoolId: enviroment?.AWS_COGNITO_POOL_ID,
-   clientId: enviroment?.AWS_COGNITO_CLIENT_ID,
+   userPoolId: process.env.AWS_COGNITO_POOL_ID,
+   clientId: process.env.AWS_COGNITO_CLIENT_ID,
    // We expect an Identity Token (vs. Access Token)
    tokenUse: "id",
 });
