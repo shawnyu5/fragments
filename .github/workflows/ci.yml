@@ -66,14 +66,14 @@ jobs:
         run: |
           touch .env
           echo -e '
-             PORT=${{ secrets.PORT }},
-             LOG_LEVEL=${{ secrets.LOG_LEVEL }},
+             PORT=${{ secrets.PORT }}
+             LOG_LEVEL=${{ secrets.LOG_LEVEL }}
              # AWS Amazon Cognito User Pool ID (use your User Pool ID)
-             AWS_COGNITO_POOL_ID=${{ secrets.AWS_COGNITO_POOL_ID }},
+             AWS_COGNITO_POOL_ID=${{ secrets.AWS_COGNITO_POOL_ID }}
              # AWS Amazon Cognito Client App ID (use your Client App ID)
-             AWS_COGNITO_CLIENT_ID=${{ secrets.AWS_COGNITO_CLIENT_ID }},
-             API_URL=http://localhost:8080,
-             HTPASSWD_FILE=./tests/.htpasswd,
+             AWS_COGNITO_CLIENT_ID=${{ secrets.AWS_COGNITO_CLIENT_ID }}
+             API_URL=http://localhost:8080
+             HTPASSWD_FILE=./tests/.htpasswd
              PRODUCTION: false
           ' > .env
           npm install-ci-test
