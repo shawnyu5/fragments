@@ -64,18 +64,16 @@ jobs:
         # 2. Use `install-ci-test` to do it in a single command, see https://docs.npmjs.com/cli/v8/commands/npm-install-ci-test
         # run: npm install-ci-test
         run: |
-          touch enviroments/enviroment.ts
+          touch .env
           echo -e '
-          export const enviroment = {
-             PORT: "${{ secrets.PORT }}",
-             LOG_LEVEL: "${{ secrets.LOG_LEVEL }}",
-             // AWS Amazon Cognito User Pool ID (use your User Pool ID)
-             AWS_COGNITO_POOL_ID: "${{ secrets.AWS_COGNITO_POOL_ID }}",
-             // AWS Amazon Cognito Client App ID (use your Client App ID)
-             AWS_COGNITO_CLIENT_ID: "${{ secrets.AWS_COGNITO_CLIENT_ID }}",
-             API_URL: "http://localhost:8080",
-             HTPASSWD_FILE: "./tests/.htpasswd",
+             PORT=${{ secrets.PORT }},
+             LOG_LEVEL=${{ secrets.LOG_LEVEL }},
+             # AWS Amazon Cognito User Pool ID (use your User Pool ID)
+             AWS_COGNITO_POOL_ID=${{ secrets.AWS_COGNITO_POOL_ID }},
+             # AWS Amazon Cognito Client App ID (use your Client App ID)
+             AWS_COGNITO_CLIENT_ID=${{ secrets.AWS_COGNITO_CLIENT_ID }},
+             API_URL=http://localhost:8080,
+             HTPASSWD_FILE=./tests/.htpasswd,
              PRODUCTION: false
-          };
-          ' > enviroments/enviroment.ts
+          ' > .env
           npm install-ci-test
