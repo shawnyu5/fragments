@@ -2,6 +2,8 @@ import auth from "http-auth";
 // @ts-ignore
 import authPassport from "http-auth-passport"; // tslint:disable-line
 import { authorize } from "./authorize-middleware";
+import * as dotenv from "dotenv";
+dotenv.config();
 
 // We expect HTPASSWD_FILE to be defined.
 if (!process.env.HTPASSWD_FILE) {

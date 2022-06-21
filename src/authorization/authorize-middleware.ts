@@ -34,6 +34,7 @@ export function authorize(
                .status(401)
                .json(createErrorResponse(401, "Unauthorized"));
          }
+         logger.info({ email }, "user authorized");
 
          // Authorized. Hash the user's email, attach to the request, and continue
          req.user = hash(email);

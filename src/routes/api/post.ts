@@ -8,18 +8,20 @@ import { createSuccessResponse } from "../../response";
 export async function fragment(req: any, res: any) {
    const obj = req.body;
    const contentType = req.header("content-type");
-   const user = req.headers.authorization;
+   const user = req.user;
    let fragment = new Fragment({ type: contentType, ownerId: user });
-   await fragment.setData(obj);
-   await fragment.save();
 
-   const newFragment = await Fragment.byUser(user, true);
+   try {
+      await fragment.setData(obj);
+      await fragment.save();
 
-   let message = `${JSON.stringify(
-      createSuccessResponse({ Fragments: newFragment[0] }),
-      null,
-      2
-   )}`;
-   logger.info(message);
-   res.status(201).send(message);
+      let message = `${
+         (createSuccessResponse({ Fragments: fragment }), null, 2)
+      }`;
+      logger.info(message);
+      res.status(201).json(message);
+   } catch (err) {
+      logger.error(err);
+      res.status(500).send(err);
+   }
 }

@@ -61,6 +61,7 @@ describe("GET /v1/fragments/:id", () => {
          .auth("user1@email.com", "password1");
 
       const body = JSON.parse(res.text);
+      console.log("(anon)#(anon) body: %s", body); // __AUTO_GENERATED_PRINT_VAR__
       // check we got a fragment back
       expect(body).toBeTruthy();
       // check the fragment is the one we created

@@ -4,8 +4,9 @@
 import { Strategy as BearerStrategy } from "passport-http-bearer";
 import { CognitoJwtVerifier } from "aws-jwt-verify";
 import { authorize } from "./authorize-middleware";
-
 import logger from "../logger";
+import * as dotenv from "dotenv";
+dotenv.config();
 
 if (!(process.env.AWS_COGNITO_POOL_ID && process.env.AWS_COGNITO_CLIENT_ID)) {
    throw new Error(
