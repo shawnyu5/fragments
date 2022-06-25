@@ -1,13 +1,31 @@
 # This file dockerizes the fragments service
+FROM node:16.15 AS build
 
-# Use node version 16.13.2
-FROM node:16.13.2
+# We default to use port 8080 in our service
+# Use /app as our working directory. This will create the directory and enter it.
+WORKDIR /app
+
+# Copy the package.json and package-lock.json files into /app
+COPY package*.json ./
+COPY ./tsconfig.json ./
+# Install node dependencies defined in package-lock.json
+RUN npm ci
+
+# Copy src to /app/src/
+COPY ./src ./src
+COPY ./tests/.htpasswd ./tests/.htpasswd
+
+# compile the source code into js
+RUN npm run build
+
+FROM node:16.15-alpine AS production
 
 # define meta data about this container
 LABEL maintainer="Shawn Yu <hyu126@myseneca.ca"
 LABEL description="Fragments node.js microservice"
 
-# We default to use port 8080 in our service
+WORKDIR /app
+
 ENV PORT=8080
 
 # Reduce npm spam when installing within Docker
@@ -18,24 +36,11 @@ ENV NPM_CONFIG_LOGLEVEL=warn
 # https://docs.npmjs.com/cli/v8/using-npm/config#color
 ENV NPM_CONFIG_COLOR=false
 
-# Use /app as our working directory. This will create the directory and enter it.
-WORKDIR /app
+COPY ./package*.json ./
+RUN npm ci --omit=dev
 
-# Copy the package.json and package-lock.json files into /app
-COPY package*.json ./
+COPY --from=build /app/build ./build
 
-# Install node dependencies defined in package-lock.json
-RUN npm install
-
-# Copy src to /app/src/
-COPY ./src ./src
-
-# copy over enviroment.ts
-COPY ./enviroments/ ./enviroments/
-
-COPY ./tests/.htpasswd ./tests/.htpasswd
-
-# Start the container by running our server
 CMD npm start
 
 # We run our service on port 8080, and have it accessible on port 8080 from outside the container
