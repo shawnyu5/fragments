@@ -25,7 +25,7 @@ describe("GET /v1/fragments", () => {
       expect(Array.isArray(res.body.fragments)).toBe(true);
    });
 
-   test("authenticated users get a fragments array with their fragments", async () => {
+   test("authenticated users get a non expanded fragments array with their fragment id", async () => {
       const fragment = new Fragment({
          ownerId: "user1@email.com",
          type: "text/plain",
@@ -38,6 +38,22 @@ describe("GET /v1/fragments", () => {
 
       const body = res.body;
       expect(body.fragments.length).toBe(1);
+      expect(body.fragments).toContainEqual(fragment.id);
+   });
+
+   test("authenticated users get a expanded fragments array with their entire fragment", async () => {
+      const fragment = new Fragment({
+         ownerId: "user1@email.com",
+         type: "text/plain",
+      });
+      await fragment.save();
+
+      const res = await request(app)
+         .get("/v1/fragments/?expand=1")
+         .auth("user1@email.com", "password1");
+
+      const body = res.body;
+      expect(body.fragments.length).toBe(2);
       expect(body.fragments).toContainEqual(fragment);
    });
 });
