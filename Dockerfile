@@ -41,7 +41,7 @@ RUN npm ci --omit=dev
 
 COPY --from=build /app/build ./build
 
-CMD npm start
+CMD ["npm", "start"]
 
 # We run our service on port 8080, and have it accessible on port 8080 from outside the container
 EXPOSE 8080
