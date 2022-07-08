@@ -63,13 +63,15 @@ describe("GET /v1/fragments/:id", () => {
       await request(app).get("/v1/fragments").expect(401);
    });
 
-   test("authenicated users get their fragments", async () => {
+   test("authenicated users get their fragment data", async () => {
       // create a new fragment and save it
       const ownerId = "user1@email.com";
+      const data = Buffer.from("hello world", "utf-8");
       const fragment = new Fragment({
          ownerId: ownerId,
          type: "text/plain",
       });
+      await fragment.setData(data);
       await fragment.save();
       const id = fragment.id;
       const res = await request(app)
@@ -77,10 +79,33 @@ describe("GET /v1/fragments/:id", () => {
          .auth("user1@email.com", "password1");
 
       const body = JSON.parse(res.text);
-      console.log("(anon)#(anon) body: %s", body); // __AUTO_GENERATED_PRINT_VAR__
       // check we got a fragment back
-      expect(body).toBeTruthy();
-      // check the fragment is the one we created
-      expect(body.fragments.id).toBe(id);
+      expect(body.fragments).toBeTruthy();
+      // check the data we got back is correct
+      expect(Buffer.from(body.fragments.data)).toEqual(data);
+   });
+});
+
+describe("GET /v1/fragments/:id/info", () => {
+   test("unauthenticated requests are denied", async () => {
+      await request(app).get("/v1/fragments/info").expect(401);
+   }, 10000);
+
+   test("authenicated users get their fragment metadata", async () => {
+      const ownerId = "user1@email.com";
+      const fragment = new Fragment({
+         ownerId: ownerId,
+         type: "text/plain",
+      });
+      await fragment.save();
+
+      const id = fragment.id;
+      const res = await request(app)
+         .get(`/v1/fragments/${id}/info`)
+         .auth(ownerId, "password1");
+
+      const body = JSON.parse(res.text);
+      expect(body.fragment).toBeTruthy();
+      expect(body.fragment.id).toBe(id);
    });
 });

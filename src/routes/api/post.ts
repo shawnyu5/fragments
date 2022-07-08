@@ -15,9 +15,8 @@ export async function fragment(req: any, res: any) {
       await fragment.setData(obj);
       await fragment.save();
 
-      let message = `${
-         (createSuccessResponse({ Fragments: fragment }), null, 2)
-      }`;
+      let message = `${(createSuccessResponse({ Fragments: fragment }), null, 2)
+         }`;
       logger.info(message);
       res.status(201).json(message);
    } catch (err) {

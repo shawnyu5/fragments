@@ -49,7 +49,10 @@ export function writeFragmentData(fragment: Metadata): Promise<any> {
  * @param id - fragment id
  * @returns Promise with retrieved fragment
  */
-export async function readFragmentData(ownerId: string, id: string) {
+export async function readFragmentData(
+   ownerId: string,
+   id: string
+): Promise<any> {
    return await data.get(ownerId, id);
 }
 

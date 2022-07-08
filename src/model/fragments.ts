@@ -78,7 +78,7 @@ export class Fragment {
    }
 
    /**
-    * Gets a fragment object for the user by the given id.
+    * Gets a fragment's metadata for the user by the given id.
     * @param {string} ownerId user's email in plain text
     * @param {string} id fragment's id
     * @returns Promise<Fragment>
@@ -115,7 +115,7 @@ export class Fragment {
     * Gets the fragment's data from the database
     * @returns Promise<Buffer>
     */
-   getData(): Promise<any> {
+   getData(): Promise<Buffer> {
       return readFragmentData(this.ownerId, this.id as string);
    }
 
@@ -127,12 +127,12 @@ export class Fragment {
    async setData(data: Buffer): Promise<void> {
       this.updated = new Date().toISOString();
       this.size = data.length;
-      this.save();
       await writeFragmentData({
          ownerId: this.ownerId,
          id: this.id as string,
          value: data,
       });
+      await this.save();
    }
 
    /**

@@ -29,5 +29,6 @@ const router = express.Router();
 router.get("/fragments", get.getFragments);
 router.post("/fragments", rawBody(), post.fragment);
 router.get("/fragments/:id", get.fragmentsWithId);
+router.get("/fragments/:id/info", get.getFragmentMetaData);
 
 export default router;
