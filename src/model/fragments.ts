@@ -83,7 +83,7 @@ export class Fragment {
     * @param {string} id fragment's id
     * @returns Promise<Fragment>
     */
-   static async byId(ownerId: string, id: string): Promise<Fragment> {
+   static async byOwnerId(ownerId: string, id: string): Promise<Fragment> {
       return (await readFragment(hash(ownerId), id)) as Fragment;
    }
 

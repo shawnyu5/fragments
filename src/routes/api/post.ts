@@ -3,7 +3,7 @@ import { Fragment } from "../../model/fragments";
 import { createSuccessResponse } from "../../response";
 
 /**
- * handle the request to get a list of fragments for the current user
+ * handle the request to save a fragments for the current user
  */
 export async function fragment(req: any, res: any) {
    const obj = req.body;
@@ -15,8 +15,7 @@ export async function fragment(req: any, res: any) {
       await fragment.setData(obj);
       await fragment.save();
 
-      let message = `${(createSuccessResponse({ Fragments: fragment }), null, 2)
-         }`;
+      let message = createSuccessResponse({ Fragments: fragment });
       logger.info(message);
       res.status(201).json(message);
    } catch (err) {

@@ -189,7 +189,7 @@ describe("Fragment class", () => {
       });
    });
 
-   describe("save(), getData(), setData(), byId(), byUser(), delete()", () => {
+   describe("save(), getData(), setData(), byOwnerId(), byUser(), delete()", () => {
       test("byUser() returns an empty array if there are no fragments for this user", async () => {
          expect(await Fragment.byUser("1234")).toEqual([]);
       });
@@ -204,7 +204,7 @@ describe("Fragment class", () => {
          await fragment.save();
          await fragment.setData(data);
 
-         const fragment2 = (await Fragment.byId(
+         const fragment2 = (await Fragment.byOwnerId(
             "1234",
             fragment.id as string
          )) as Fragment;
@@ -222,7 +222,7 @@ describe("Fragment class", () => {
          const modified1 = fragment.updated;
          await wait();
          await fragment.save();
-         const fragment2 = (await Fragment.byId(
+         const fragment2 = (await Fragment.byOwnerId(
             ownerId,
             fragment.id as string
          )) as Fragment;
@@ -244,7 +244,10 @@ describe("Fragment class", () => {
          await wait();
          await fragment.setData(data);
          await wait();
-         const fragment2 = await Fragment.byId(ownerId, fragment.id as string);
+         const fragment2 = await Fragment.byOwnerId(
+            ownerId,
+            fragment.id as string
+         );
          expect(Date.parse(fragment2.updated)).toBeGreaterThan(
             Date.parse(modified1)
          );
@@ -289,7 +292,10 @@ describe("Fragment class", () => {
          expect(fragment.size).toBe(1);
 
          await fragment.setData(Buffer.from("aa"));
-         const { size } = await Fragment.byId("1234", fragment.id as string);
+         const { size } = await Fragment.byOwnerId(
+            "1234",
+            fragment.id as string
+         );
          expect(size).toBe(2);
       });
 
@@ -304,7 +310,7 @@ describe("Fragment class", () => {
 
          await Fragment.delete("1234", fragment.id as string);
          // expect(() =>
-         // Fragment.byId("1234", fragment.id as string)
+         // Fragment.byOwnerId("1234", fragment.id as string)
          // ).rejects.toThrow();
       });
    });

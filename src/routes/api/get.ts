@@ -1,17 +1,20 @@
+import logger from "../../logger";
 import { Fragment } from "../../model/fragments";
-import { createSuccessResponse } from "../../response";
+import { createSuccessResponse, createErrorResponse } from "../../response";
 import { fragment } from "./post";
 /**
  * Get a list of fragments for the current user
  */
 export async function getFragments(req: any, res: any) {
    const expand = req.query.expand;
-   const user = Buffer.from(req.get("authorization").split(" ")[1], "base64")
-      .toString()
-      .split(":")[0];
+   // const user = Buffer.from(req.get("authorization").split(" ")[1], "base64")
+   // .toString()
+   // .split(":")[0];
+   const user = req.user;
 
    if (!expand) {
-      let fragments = await Fragment.byUser(user, false);
+      const fragments = await Fragment.byUser(user, expand);
+      console.log("getFragments#if fragments: %s", fragments); // __AUTO_GENERATED_PRINT_VAR__
       res.status(201).json(createSuccessResponse({ fragments: fragments }));
    } else {
       let fragments = await Fragment.byUser(user, true);
@@ -20,18 +23,21 @@ export async function getFragments(req: any, res: any) {
 }
 
 /**
- * A route to get a Fragment's data by ID
+ * A route to get a Fragment's data by owner ID
  */
 export async function fragmentsWithId(req: any, res: any) {
    const id = req.params.id;
-   const ownerId = new Buffer(req.get("authorization").split(" ")[1], "base64")
-      .toString()
-      .split(":")[0];
+   const ownerId = req.user;
 
-   let fragments = await Fragment.byId(ownerId, id);
-   let data = await fragments.getData();
-
-   res.status(201).json(createSuccessResponse({ fragments: data }));
+   try {
+      // let fragments = await Fragment.byOwnerId(ownerId, id);
+      let fragments = await Fragment.byOwnerId(ownerId, id);
+      let data = await fragments.getData();
+      res.status(201).json(createSuccessResponse({ fragments: data }));
+   } catch (err) {
+      logger.error(err);
+      res.status(500).json(createErrorResponse(500, err as string));
+   }
 }
 
 /**
@@ -41,10 +47,10 @@ export async function fragmentsWithId(req: any, res: any) {
  */
 export async function getFragmentMetaData(req: any, res: any) {
    const id = req.params.id;
-   const owerId = new Buffer(req.get("authorization").split(" ")[1], "base64")
+   const owerId = Buffer.from(req.get("authorization").split(" ")[1], "base64")
       .toString()
       .split(":")[0];
 
-   let fragmentMetaData = await Fragment.byId(owerId, id);
+   let fragmentMetaData = await Fragment.byOwnerId(owerId, id);
    res.status(201).json(createSuccessResponse({ fragment: fragmentMetaData }));
 }
