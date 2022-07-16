@@ -1,4 +1,4 @@
-import { Fragment } from "../../src/model/fragments";
+import { Fragment, hash } from "../../src/model/fragments";
 
 /**
  * Wait for a certain milliseconds
@@ -185,7 +185,7 @@ describe("Fragment class", () => {
             type: "text/plain; charset=utf-8",
             size: 0,
          });
-         expect(fragment.formats).toEqual(["text/plain"]);
+         expect(fragment.formats).toEqual(["text/plain", "text/markdown"]);
       });
    });
 
@@ -205,7 +205,7 @@ describe("Fragment class", () => {
          await fragment.setData(data);
 
          const fragment2 = (await Fragment.byOwnerId(
-            "1234",
+            fragment.ownerId,
             fragment.id as string
          )) as Fragment;
          expect(fragment2).toEqual(fragment);
@@ -222,11 +222,12 @@ describe("Fragment class", () => {
          const modified1 = fragment.updated;
          await wait();
          await fragment.save();
-         const fragment2 = (await Fragment.byOwnerId(
-            ownerId,
+         const newFragment = (await Fragment.byOwnerId(
+            fragment.ownerId,
             fragment.id as string
          )) as Fragment;
-         expect(Date.parse(fragment2.updated as string)).toBeGreaterThan(
+
+         expect(Date.parse(newFragment.updated as string)).toBeGreaterThan(
             Date.parse(modified1 as string)
          );
       });
@@ -245,7 +246,7 @@ describe("Fragment class", () => {
          await fragment.setData(data);
          await wait();
          const fragment2 = await Fragment.byOwnerId(
-            ownerId,
+            fragment.ownerId,
             fragment.id as string
          );
          expect(Date.parse(fragment2.updated)).toBeGreaterThan(
@@ -264,7 +265,7 @@ describe("Fragment class", () => {
          await fragment.save();
          await fragment.setData(data);
 
-         expect(await Fragment.byUser(ownerId)).toEqual([fragment.id]);
+         expect(await Fragment.byUser(hash(ownerId))).toEqual([fragment.id]);
       });
 
       test("full fragments are returned when requested for a user", async () => {
@@ -278,7 +279,7 @@ describe("Fragment class", () => {
          await fragment.save();
          await fragment.setData(data);
 
-         expect(await Fragment.byUser(ownerId, true)).toEqual([fragment]);
+         expect(await Fragment.byUser(hash(ownerId), true)).toEqual([fragment]);
       });
 
       test("setData() updates the fragment size", async () => {
@@ -292,11 +293,11 @@ describe("Fragment class", () => {
          expect(fragment.size).toBe(1);
 
          await fragment.setData(Buffer.from("aa"));
-         const { size } = await Fragment.byOwnerId(
-            "1234",
+         const newFragment = await Fragment.byOwnerId(
+            fragment.ownerId,
             fragment.id as string
          );
-         expect(size).toBe(2);
+         expect(newFragment.size).toBe(2);
       });
 
       test("a fragment can be deleted", async () => {

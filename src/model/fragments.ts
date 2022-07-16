@@ -11,7 +11,7 @@ import crypto from "crypto";
  * @param str - a string to be hashed
  * @returns the string hased with the SHA-256 algorithm
  */
-function hash(str: string) {
+export function hash(str: string) {
    const hashString = crypto.createHash("sha256");
    hashString.update(str);
    return hashString.digest("hex");
@@ -28,6 +28,7 @@ import {
 
 export class Fragment {
    id: string = "";
+   // hashed respresentation of the user's email
    ownerId: string = "";
    created: string = "";
    updated: string = "";
@@ -73,18 +74,17 @@ export class Fragment {
       ownerId: string,
       expand = false
    ): Promise<Array<IFragment | string | undefined>> {
-      const f = await listFragments(hash(ownerId), expand);
-      return f;
+      return await listFragments(ownerId, expand);
    }
 
    /**
     * Gets a fragment's metadata for the user by the given id.
-    * @param {string} ownerId user's email in plain text
+    * @param {string} ownerId owner id (hashed email)
     * @param {string} id fragment's id
     * @returns Promise<Fragment>
     */
    static async byOwnerId(ownerId: string, id: string): Promise<Fragment> {
-      return (await readFragment(hash(ownerId), id)) as Fragment;
+      return (await readFragment(ownerId, id)) as Fragment;
    }
 
    /**
@@ -158,7 +158,7 @@ export class Fragment {
     * @returns {Array<string>} list of supported mime types
     */
    get formats(): Array<string> {
-      const supportedType: Array<string> = ["text/plain"];
+      const supportedType: Array<string> = ["text/plain", "text/markdown"];
       return supportedType;
    }
 
@@ -171,6 +171,7 @@ export class Fragment {
       const supportedType: Array<string> = [
          "text/plain",
          "text/plain; charset=utf-8",
+         "text/markdown",
          "application/json",
       ];
       for (const type of supportedType) {
