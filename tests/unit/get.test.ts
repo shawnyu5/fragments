@@ -1,6 +1,6 @@
 import request from "supertest";
 import app from "../../src/app";
-import { Fragment } from "../../src/model/fragments";
+import { Fragment, hash } from "../../src/model/fragments";
 
 describe("GET /v1/fragments", () => {
    // If the request is missing the Authorization header, it should be forbidden
@@ -38,7 +38,7 @@ describe("GET /v1/fragments", () => {
 
       const body = res.body;
       expect(body.fragments.length).toBe(1);
-      // expect(body.fragments).toContainEqual(fragment.id);
+      expect(body.fragments).toContainEqual(fragment.id);
    });
 
    test("authenticated users get a expanded fragments array with their entire fragment", async () => {
@@ -107,5 +107,71 @@ describe("GET /v1/fragments/:id/info", () => {
       const body = JSON.parse(res.text);
       expect(body.fragment).toBeTruthy();
       expect(body.fragment.id).toBe(id);
+   });
+});
+
+describe("GET /fragments/:id.ext", () => {
+   describe("unauthenticated users", () => {
+      test("unauthenticated requests are denied", async () => {
+         await request(app).get("/fragments/1.ext").expect(404);
+      });
+   });
+
+   describe("authenticated users", () => {
+      test("able to store a markdown fragment", async () => {
+         const ownerId = "user1@email.com";
+         const fragment = new Fragment({
+            ownerId: ownerId,
+            type: "text/markdown",
+         });
+         await fragment.setData(Buffer.from("# hello world"));
+         await fragment.save();
+
+         const id = fragment.id;
+         const res = await request(app)
+            .get(`/v1/fragments/${id}/info`)
+            .auth(ownerId, "password1");
+
+         const body = res.body;
+         expect(body.fragment.type).toBe("text/markdown");
+         expect(body.fragment.id).toBe(id);
+      });
+
+      test("can not convert a unsupported fragment", async () => {
+         const ownerId = "user1@email.com";
+         const fragment = new Fragment({
+            ownerId: ownerId,
+            type: "text/plain",
+         });
+         await fragment.setData(Buffer.from("# hello world", "utf-8"));
+         await fragment.save();
+
+         const id = fragment.id;
+         const res = await request(app)
+            .get(`/v1/fragments/${id}/apple`)
+            .auth(ownerId, "password1");
+
+         expect(res.statusCode).toBe(400);
+      });
+
+      test("get their markdown fragment back as html", async () => {
+         const ownerId = "user1@email.com";
+         const fragment = new Fragment({
+            ownerId: ownerId,
+            type: "text/markdown",
+         });
+         await fragment.setData(Buffer.from("# hello world", "utf-8"));
+         await fragment.save();
+
+         const id = fragment.id;
+         const res = await request(app)
+            .get(`/v1/fragments/${id}/md`)
+            .auth(ownerId, "password1");
+
+         const md = require("markdown-it")();
+         const converted = md.render((await fragment.getData()).toString());
+         const body = res.body;
+         expect(body.html).toBe(converted);
+      });
    });
 });

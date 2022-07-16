@@ -115,8 +115,8 @@ export class Fragment {
     * Gets the fragment's data from the database
     * @returns Promise<Buffer>
     */
-   getData(): Promise<Buffer> {
-      return readFragmentData(this.ownerId, this.id as string);
+   async getData(): Promise<Buffer> {
+      return await readFragmentData(this.ownerId, this.id as string);
    }
 
    /**

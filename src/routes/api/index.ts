@@ -30,5 +30,6 @@ router.get("/fragments", get.getFragments);
 router.post("/fragments", rawBody(), post.fragment);
 router.get("/fragments/:id", get.fragmentsWithId);
 router.get("/fragments/:id/info", get.getFragmentMetaData);
+router.get("/fragments/:id/:ext", get.convertFragmentToType);
 
 export default router;
