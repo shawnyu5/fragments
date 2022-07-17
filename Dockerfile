@@ -37,6 +37,7 @@ ENV NPM_CONFIG_LOGLEVEL=warn
 ENV NPM_CONFIG_COLOR=false
 
 COPY ./package*.json ./
+COPY ./tsconfig.json ./
 RUN npm ci --omit=dev
 
 COPY --from=build /app/build ./build
