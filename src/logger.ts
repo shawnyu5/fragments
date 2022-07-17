@@ -1,4 +1,6 @@
 import pino, { LoggerOptions } from "pino";
+import * as dotenv from "dotenv";
+dotenv.config();
 
 // Use `info` as our standard log level if not specified
 const options: LoggerOptions = { level: process.env["LOG_LEVEL"] || "info" };
