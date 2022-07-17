@@ -54,7 +54,7 @@ export class Fragment {
          throw new Error("Fragment size must be >= 0");
       }
       this.id = id || nanoid(); // either passed in or generated
-      this.ownerId = hash(ownerId);
+      this.ownerId = ownerId; // NOTE: owner id should be already hashed
       this.created = created;
       this.updated = updated;
       this.type = type;

@@ -26,17 +26,20 @@ describe("GET /v1/fragments", () => {
    });
 
    test("authenticated users get a non expanded fragments array with their fragment id", async () => {
+      const ownerId = "user1@email.com";
       const fragment = new Fragment({
-         ownerId: "user1@email.com",
+         ownerId: hash(ownerId),
          type: "text/plain",
       });
+
       await fragment.save();
 
       const res = await request(app)
          .get("/v1/fragments")
-         .auth("user1@email.com", "password1");
+         .auth(ownerId, "password1");
 
       const body = res.body;
+      // console.log("(anon)#(anon) body: %s", JSON.stringify(res)); // __AUTO_GENERATED_PRINT_VAR__
       expect(body.fragments.length).toBe(1);
       expect(body.fragments).toContainEqual(fragment.id);
    });
@@ -94,7 +97,7 @@ describe("GET /v1/fragments/:id/info", () => {
    test("authenicated users get their fragment metadata", async () => {
       const ownerId = "user1@email.com";
       const fragment = new Fragment({
-         ownerId: ownerId,
+         ownerId: hash(ownerId),
          type: "text/plain",
       });
       await fragment.save();
@@ -104,7 +107,7 @@ describe("GET /v1/fragments/:id/info", () => {
          .get(`/v1/fragments/${id}/info`)
          .auth(ownerId, "password1");
 
-      const body = JSON.parse(res.text);
+      const body = res.body;
       expect(body.fragment).toBeTruthy();
       expect(body.fragment.id).toBe(id);
    });
@@ -121,7 +124,7 @@ describe("GET /fragments/:id.ext", () => {
       test("able to store a markdown fragment", async () => {
          const ownerId = "user1@email.com";
          const fragment = new Fragment({
-            ownerId: ownerId,
+            ownerId: hash(ownerId),
             type: "text/markdown",
          });
          await fragment.setData(Buffer.from("# hello world"));
@@ -140,7 +143,7 @@ describe("GET /fragments/:id.ext", () => {
       test("can not convert a unsupported fragment", async () => {
          const ownerId = "user1@email.com";
          const fragment = new Fragment({
-            ownerId: ownerId,
+            ownerId: hash(ownerId),
             type: "text/plain",
          });
          await fragment.setData(Buffer.from("# hello world", "utf-8"));
@@ -157,7 +160,7 @@ describe("GET /fragments/:id.ext", () => {
       test("get their markdown fragment back as html", async () => {
          const ownerId = "user1@email.com";
          const fragment = new Fragment({
-            ownerId: ownerId,
+            ownerId: hash(ownerId),
             type: "text/markdown",
          });
          await fragment.setData(Buffer.from("# hello world", "utf-8"));

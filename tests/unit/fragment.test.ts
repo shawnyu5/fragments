@@ -265,7 +265,7 @@ describe("Fragment class", () => {
          await fragment.save();
          await fragment.setData(data);
 
-         expect(await Fragment.byUser(hash(ownerId))).toEqual([fragment.id]);
+         expect(await Fragment.byUser(ownerId)).toEqual([fragment.id]);
       });
 
       test("full fragments are returned when requested for a user", async () => {
@@ -279,7 +279,7 @@ describe("Fragment class", () => {
          await fragment.save();
          await fragment.setData(data);
 
-         expect(await Fragment.byUser(hash(ownerId), true)).toEqual([fragment]);
+         expect(await Fragment.byUser(ownerId, true)).toEqual([fragment]);
       });
 
       test("setData() updates the fragment size", async () => {
@@ -301,8 +301,9 @@ describe("Fragment class", () => {
       });
 
       test("a fragment can be deleted", async () => {
+         const ownerId = "1234";
          const fragment = new Fragment({
-            ownerId: "1234",
+            ownerId: hash(ownerId),
             type: "text/plain",
             size: 0,
          });
