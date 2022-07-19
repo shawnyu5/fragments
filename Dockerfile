@@ -39,6 +39,7 @@ ENV NPM_CONFIG_COLOR=false
 COPY ./package*.json ./
 COPY ./tsconfig.json ./
 RUN npm ci --omit=dev
+COPY ./tests/.htpasswd ./tests/.htpasswd
 
 COPY --from=build /app/build ./build
 

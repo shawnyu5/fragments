@@ -11,6 +11,7 @@
       "coverage": "jest -c jest.config.js --runInBand --coverage",
       "test:watch": "jest -c jest.config.js --runInBand --watch --",
       "test:watch-failOnly": "jest -c jest.config.js --runInBand --reporters jest-silent-reporter --watch --",
+      "test:integration": "hurl --test --glob 'tests/integration/**/*.hurl'",
       "build": "tsc -p tsconfig.json"
    },
    "author": "Shawn Yu",
@@ -36,6 +37,7 @@
       "typescript": "^4.6.4"
    },
    "devDependencies": {
+      "@orangeopensource/hurl": "^1.6.5",
       "@types/compression": "^1.7.2",
       "@types/content-type": "^1.1.5",
       "@types/cors": "^2.8.12",

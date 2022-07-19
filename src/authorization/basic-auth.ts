@@ -21,6 +21,5 @@ export function strategy() {
 }
 
 export function authenticate() {
-   // return passport.authenticate("http", { session: false });
    return authorize("http");
 }
