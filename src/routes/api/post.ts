@@ -9,9 +9,9 @@ export async function fragment(req: any, res: any) {
    const body = req.body;
    const contentType = req.header("content-type");
    const user = req.user;
-   let fragment = new Fragment({ type: contentType, ownerId: user });
-
    try {
+      let fragment = new Fragment({ type: contentType, ownerId: user });
+
       await fragment.setData(body);
       await fragment.save();
 

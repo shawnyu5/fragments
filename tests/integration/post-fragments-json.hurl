@@ -3,13 +3,15 @@ POST http://localhost:8080/v1/fragments
 # user1@email.com:password1
 Authorization: Basic dXNlcjFAZW1haWwuY29tOnBhc3N3b3JkMQ==
 # We're sending a plain text fragment
-Content-Type: text/plain
+Content-Type: application/json
 # Body of the request goes in ```...``` when it's a string
-```This is a fragment!```
+```
+{
+  "fragment": "This is a json fragment"
+}
+```
 
-# We expect to get back an HTTP 201
 HTTP/1.1 201
-# We have various assertions about the response that we want to check
 [Asserts]
 jsonpath "$.status" == "ok"
 # Our fragment ids use https://www.npmjs.com/package/nanoid
@@ -20,6 +22,5 @@ jsonpath "$.Fragments.ownerId" matches "^[0-9a-fA-F]+$"
 # You could also write a regex for this and use matches
 jsonpath "$.Fragments.created" isString
 jsonpath "$.Fragments.updated" isString
-jsonpath "$.Fragments.type" == "text/plain"
-# 19 is the length of our fragment data: 'This is a fragment!'
-jsonpath "$.Fragments.size" == 19
+jsonpath "$.Fragments.type" == "application/json"
+
