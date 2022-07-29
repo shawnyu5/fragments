@@ -17,6 +17,9 @@ export async function fragment(req: any, res: any) {
 
       let message = createSuccessResponse({ Fragments: fragment });
       logger.info(message);
+      res.location(
+         `http://localhost:${process.env.PORT}/v1/fragments/${fragment.id}`
+      );
       res.status(201).json(message);
    } catch (err) {
       logger.error(err);
