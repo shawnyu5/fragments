@@ -1,4 +1,5 @@
 import * as dotenv from "dotenv";
+import logger from "../../logger";
 dotenv.config();
 
 // import { Metadata } from "./memory";
@@ -15,6 +16,10 @@ dotenv.config();
 // deleteFragment(ownerId: string, id: string): Promise<[any, any]>;
 // }
 
-module.exports = process.env.AWS_REGION
-   ? require("./aws")
-   : require("./memory");
+if (process.env.PRODUCTION == "true") {
+   logger.info("Using aws database in production");
+   module.exports = require("./aws");
+} else {
+   logger.info("Using in memory database in development");
+   module.exports = require("./memory");
+}

@@ -23,3 +23,6 @@ jsonpath "$.Fragments.updated" isString
 jsonpath "$.Fragments.type" == "text/plain"
 # 19 is the length of our fragment data: 'This is a fragment!'
 jsonpath "$.Fragments.size" == 19
+header "Location" matches "^http:\/\/localhost:8080\/v1\/fragments\/[A-Za-z0-9_-]+$"
+
+
