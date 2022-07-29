@@ -6,6 +6,7 @@ import { Fragment } from "../../model/fragments";
 import contentType from "content-type";
 import * as get from "./get";
 import * as post from "./post";
+import * as deleteRoute from "./delete";
 
 // Support sending various Content-Types on the body up to 5M in size
 function rawBody() {
@@ -31,5 +32,6 @@ router.post("/fragments", rawBody(), post.fragment);
 router.get("/fragments/:id", get.fragmentsWithId);
 router.get("/fragments/:id/info", get.getFragmentMetaData);
 router.get("/fragments/:id/:ext", get.convertFragmentToType);
+router.delete("/fragments/:id", deleteRoute.deleteFragment);
 
 export default router;

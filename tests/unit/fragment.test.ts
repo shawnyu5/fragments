@@ -303,7 +303,7 @@ describe("Fragment class", () => {
       test("a fragment can be deleted", async () => {
          const ownerId = "1234";
          const fragment = new Fragment({
-            ownerId: hash(ownerId),
+            ownerId: ownerId,
             type: "text/plain",
             size: 0,
          });

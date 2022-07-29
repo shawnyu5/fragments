@@ -17,14 +17,16 @@ export function hash(str: string) {
    return hashString.digest("hex");
 }
 // Functions for working with fragment metadata/data using our DB
-import {
-   readFragment,
-   writeFragment,
-   readFragmentData,
-   writeFragmentData,
-   listFragments,
-   deleteFragment,
-} from "./data";
+// NOTE: need to require since data uses modules.exports
+const data = require("./data");
+// import {
+// readFragment,
+// writeFragment,
+// readFragmentData,
+// writeFragmentData,
+// listFragments,
+// deleteFragment,
+// } from "./data";
 
 export class Fragment {
    id: string = "";
@@ -74,7 +76,7 @@ export class Fragment {
       ownerId: string,
       expand = false
    ): Promise<Array<IFragment | string | undefined>> {
-      return await listFragments(ownerId, expand);
+      return await data.listFragments(ownerId, expand);
    }
 
    /**
@@ -84,7 +86,7 @@ export class Fragment {
     * @returns Promise<Fragment>
     */
    static async byOwnerId(ownerId: string, id: string): Promise<Fragment> {
-      return (await readFragment(ownerId, id)) as Fragment;
+      return (await data.readFragment(ownerId, id)) as Fragment;
    }
 
    /**
@@ -94,8 +96,14 @@ export class Fragment {
     * @returns Promise
     */
    static async delete(ownerId: any, id: any) {
-      logger.info(`Deleting fragment id: ${id}`);
-      return deleteFragment(hash(ownerId), id);
+      try {
+         logger.info(`Deleting fragment id: ${id}`);
+         return data.deleteFragment(ownerId, id);
+      } catch (err) {
+         logger.error(`Error deleting fragment id: ${id}`);
+         logger.error(err);
+         throw err;
+      }
    }
 
    /**
@@ -104,7 +112,8 @@ export class Fragment {
     */
    async save() {
       this.updated = new Date().toISOString();
-      await writeFragment({
+      console.log("Fragment#save this.ownerId: %s", this.ownerId); // __AUTO_GENERATED_PRINT_VAR__
+      await data.writeFragment({
          ownerId: this.ownerId,
          id: this.id as string,
          value: this,
@@ -116,21 +125,21 @@ export class Fragment {
     * @returns Promise<Buffer>
     */
    async getData(): Promise<Buffer> {
-      return await readFragmentData(this.ownerId, this.id as string);
+      return await data.readFragmentData(this.ownerId, this.id as string);
    }
 
    /**
     * Set's the fragment's data in the database
-    * @param {Buffer} data
+    * @param {Buffer} dataToSave
     * @returns Promise
     */
-   async setData(data: Buffer): Promise<void> {
+   async setData(dataToSave: Buffer): Promise<void> {
       this.updated = new Date().toISOString();
-      this.size = data.length;
-      await writeFragmentData({
+      this.size = dataToSave.length;
+      await data.writeFragmentData({
          ownerId: this.ownerId,
          id: this.id as string,
-         value: data,
+         value: dataToSave,
       });
       await this.save();
    }

@@ -7,5 +7,8 @@ declare namespace NodeJS {
       HTPASSWD_FILE?: string;
       API_URL?: string;
       PRODUCTION: string;
+      // aws region of the bucket
+      AWS_REGION?: string;
+      AWS_S3_ENDPOINT_URL?: string;
    }
 }

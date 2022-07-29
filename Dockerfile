@@ -27,11 +27,9 @@ LABEL description="Fragments node.js microservice"
 WORKDIR /app
 
 ENV PORT=8080
-
 # Reduce npm spam when installing within Docker
 # https://docs.npmjs.com/cli/v8/using-npm/config#loglevel
 ENV NPM_CONFIG_LOGLEVEL=warn
-
 # Disable colour when run inside Docker
 # https://docs.npmjs.com/cli/v8/using-npm/config#color
 ENV NPM_CONFIG_COLOR=false
@@ -43,6 +41,7 @@ COPY ./tests/.htpasswd ./tests/.htpasswd
 
 COPY --from=build /app/build ./build
 
+# CMD [ "ls" ]
 CMD ["npm", "start"]
 
 # We run our service on port 8080, and have it accessible on port 8080 from outside the container

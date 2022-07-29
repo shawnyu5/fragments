@@ -1,8 +1,26 @@
 services:
+   # fragments:
+   # build: ./
+   # ports:
+   # - "8080:8080"
+   # # env_file: ./.env
+   # restart: always
+   # environment:
+   # - NODE_ENV=production
+   # - PRODUCTION=false
+   # - HTPASSWD_FILE=./tests/.htpasswd
+   # network_mode: "host"
+
    fragments:
-      build: ./
+      image: shawnyu5/fragments:latest
+      init: true
+      # stdin_open: true # docker run -i
+      # tty: true # docker run -t
       ports:
          - "8080:8080"
       env_file: ./.env
-      restart: always
+      environment:
+         - NODE_ENV=production
+         - PRODUCTION=false
+         - HTPASSWD_FILE=./tests/.htpasswd
       network_mode: "host"

@@ -1,12 +1,11 @@
 import IFragment from "../../../types/fragment";
 import { MemoryDB } from "../memory-db";
-import logger from "../../../logger";
 
 // Create two in-memory databases: one for fragment metadata and the other for raw data
 const data: MemoryDB = new MemoryDB();
 const metadata: MemoryDB = new MemoryDB();
 
-interface Metadata {
+export interface Metadata {
    ownerId: string;
    id: string;
    value: any;
@@ -57,7 +56,10 @@ export async function readFragmentData(
 }
 
 // Get a list of fragment ids/objects for the given user from memory db. Returns a Promise
-export async function listFragments(ownerId: string, expand = false) {
+export async function listFragments(
+   ownerId: string,
+   expand = false
+): Promise<IFragment[] | (string | undefined)[]> {
    const fragments = await metadata.query(ownerId);
 
    // If we don't get anything back, or are supposed to give expanded fragments, return
@@ -73,7 +75,10 @@ export async function listFragments(ownerId: string, expand = false) {
 }
 
 // Delete a fragment's metadata and data from memory db. Returns a Promise
-export function deleteFragment(ownerId: string, id: string) {
+export function deleteFragment(
+   ownerId: string,
+   id: string
+): Promise<[any, any]> {
    return Promise.all([
       // Delete metadata
       metadata.del(ownerId, id),
