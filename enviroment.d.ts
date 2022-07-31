@@ -10,5 +10,6 @@ declare namespace NodeJS {
       // aws region of the bucket
       AWS_REGION?: string;
       AWS_S3_ENDPOINT_URL?: string;
+      AWS_S3_BUCKET_NAME?: string;
    }
 }
