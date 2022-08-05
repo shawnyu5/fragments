@@ -15,5 +15,6 @@ declare namespace NodeJS {
       AWS_SECRET_ACCESS_KEY: string;
       AWS_SESSION_TOKEN: string;
       AWS_DYNAMODB_ENDPOINT_URL: string;
+      AWS_DYNAMODB_TABLE_NAME: string;
    }
 }
