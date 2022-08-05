@@ -18,6 +18,7 @@ export function hash(str: string) {
 }
 // Functions for working with fragment metadata/data using our DB
 // NOTE: need to require since data uses modules.exports
+// tslint:disable-next-line
 const data = require("./data");
 // import {
 // readFragment,
@@ -112,7 +113,6 @@ export class Fragment {
     */
    async save() {
       this.updated = new Date().toISOString();
-      console.log("Fragment#save this.ownerId: %s", this.ownerId); // __AUTO_GENERATED_PRINT_VAR__
       await data.writeFragment({
          ownerId: this.ownerId,
          id: this.id as string,
