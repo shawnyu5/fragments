@@ -5,7 +5,6 @@ import dbClient from "./ddbDocClient";
 import {
    PutObjectCommand,
    GetObjectCommand,
-   DeleteObjectCommand,
    GetObjectCommandInput,
    PutObjectCommandInput,
 } from "@aws-sdk/client-s3";
@@ -14,7 +13,6 @@ import logger from "../../../logger";
 import {
    DeleteCommand,
    DeleteCommandInput,
-   DynamoDBDocumentClient,
    GetCommand,
    PutCommand,
    QueryCommand,
@@ -22,8 +20,8 @@ import {
 } from "@aws-sdk/lib-dynamodb";
 
 // Create two in-memory databases: one for fragment metadata and the other for raw data
-const data: MemoryDB = new MemoryDB();
-const metadata: MemoryDB = new MemoryDB();
+// const data: MemoryDB = new MemoryDB();
+// const metadata: MemoryDB = new MemoryDB();
 
 interface Metadata {
    ownerId: string;
@@ -99,7 +97,7 @@ export async function writeFragmentData(fragment: Metadata): Promise<any> {
       Bucket: process.env.AWS_S3_BUCKET_NAME,
       // Our key will be a mix of the ownerID and fragment id, written as a path
       Key: `${fragment.ownerId}/${fragment.id}`,
-      Body: data,
+      Body: fragment.toString(),
    };
 
    // Create a PUT Object command to send to S3

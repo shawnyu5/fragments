@@ -17,7 +17,7 @@ dotenv.config();
 // }
 
 if (process.env.PRODUCTION == "true") {
-   logger.info("Using aws database in production");
+   logger.info("Using dynamodb in production");
    module.exports = require("./aws");
 } else {
    logger.info("Using in memory database in development");
