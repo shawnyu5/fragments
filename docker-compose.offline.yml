@@ -10,6 +10,8 @@ services:
          # Use the LOG_LEVEL set in the host environment, or default to info
          - LOG_LEVEL=${LOG_LEVEL:-info}
          - PRODUCTION=false
+         - AWS_S3_BUCKET_NAME=hyu126-fragments
+         - AWS_DYNAMODB_TABLE_NAME=fragments
       # Ports to publish
       ports:
          - "8080:8080"
