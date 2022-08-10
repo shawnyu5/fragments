@@ -1,6 +1,6 @@
 import IFragment from "../../../types/fragment";
-// import { MemoryDB } from "../memory-db";
-import s3Client from "./s3Client";
+import { MemoryDB } from "../memory-db";
+// import s3Client from "./s3Client";
 import dbClient from "./ddbDocClient";
 import {
    PutObjectCommand,
@@ -8,6 +8,7 @@ import {
    GetObjectCommandInput,
    PutObjectCommandInput,
 } from "@aws-sdk/client-s3";
+const data: MemoryDB = new MemoryDB();
 
 import logger from "../../../logger";
 import {
@@ -45,6 +46,7 @@ export async function writeFragment(fragment: Metadata): Promise<any> {
    const command = new PutCommand(params);
 
    try {
+      logger.info(`Writing fragment ${fragment.id} to DynamoDB`);
       return dbClient.send(command);
    } catch (err) {
       logger.warn(
@@ -224,8 +226,8 @@ export async function deleteFragment(ownerId: string, id: string) {
    const params: DeleteCommandInput = {
       TableName: process.env.AWS_DYNAMODB_TABLE_NAME,
       Key: {
-         primaryKey: ownerId,
-         sortedKey: id,
+         ownerId: ownerId,
+         id: id,
       },
    };
 
