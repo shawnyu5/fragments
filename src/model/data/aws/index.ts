@@ -89,32 +89,12 @@ export async function readFragment(
 }
 
 /**
- *  Writes a fragment's data to an S3 Object in a Bucket
+ *  Writes a fragment's data to an in memory db
  * @param fragment the fragment to write
  * @returns Promise if successful
  */
-export async function writeFragmentData(fragment: Metadata): Promise<any> {
-   // Create the PUT API params from our details
-   const params: PutObjectCommandInput = {
-      Bucket: process.env.AWS_S3_BUCKET_NAME,
-      // Our key will be a mix of the ownerID and fragment id, written as a path
-      Key: `${fragment.ownerId}/${fragment.id}`,
-      Body: fragment.toString(),
-   };
-
-   // Create a PUT Object command to send to S3
-   // @ts-ignore
-   const command = new PutObjectCommand(params);
-
-   try {
-      // Use our client to send the command
-      await s3Client.send(command);
-   } catch (err) {
-      // If anything goes wrong, log enough info that we can debug
-      const { Bucket, Key } = params;
-      logger.error({ err, Bucket, Key }, "Error uploading fragment data to S3");
-      throw new Error("unable to upload fragment data");
-   }
+export function writeFragmentData(fragment: Metadata): Promise<any> {
+   return data.put(fragment.ownerId, fragment.id, fragment.value);
 }
 
 /**
@@ -141,7 +121,7 @@ function streamToBuffer(stream: any): Promise<Buffer> {
 }
 
 /**
- * Reads a fragment's data from S3
+ * Read a fragment's data from memory db. Returns a Promise
  * @param ownerId - owner id
  * @param id - fragment id
  * @returns Promise with retrieved fragment
@@ -149,30 +129,8 @@ function streamToBuffer(stream: any): Promise<Buffer> {
 export async function readFragmentData(
    ownerId: string,
    id: string
-): Promise<Buffer> {
-   // Create the PUT API params from our details
-   const params: GetObjectCommandInput = {
-      Bucket: process.env.AWS_S3_BUCKET_NAME,
-      // Our key will be a mix of the ownerID and fragment id, written as a path
-      Key: `${ownerId}/${id}`,
-   };
-
-   // Create a GET Object command to send to S3
-   const command = new GetObjectCommand(params);
-
-   try {
-      // Get the object from the Amazon S3 bucket. It is returned as a ReadableStream.
-      const data = await s3Client.send(command);
-      // Convert the ReadableStream to a Buffer
-      return streamToBuffer(data.Body);
-   } catch (err) {
-      const { Bucket, Key } = params;
-      logger.error(
-         { err, Bucket, Key },
-         "Error streaming fragment data from S3"
-      );
-      throw new Error("unable to read fragment data");
-   }
+): Promise<any> {
+   return await data.get(ownerId, id);
 }
 
 // Get a list of fragment ids/objects for the given user from memory db.

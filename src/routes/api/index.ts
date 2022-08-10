@@ -27,8 +27,8 @@ function rawBody() {
 const router = express.Router();
 
 // Define our first route, which will be: GET /v1/fragments
-router.get("/fragments", get.getFragments);
 router.post("/fragments", rawBody(), post.fragment);
+router.get("/fragments", get.getFragments);
 router.get("/fragments/:id", get.fragmentsWithId);
 router.get("/fragments/:id/info", get.getFragmentMetaData);
 router.get("/fragments/:id/:ext", get.convertFragmentToType);
