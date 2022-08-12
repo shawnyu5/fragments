@@ -159,17 +159,35 @@ export class Fragment {
     * @returns {Array<string>} list of supported mime types
     */
    get formats(): Array<string> {
-      // "text/plain",
-      // "text/plain; charset=utf-8",
-      // "text/markdown",
-      // "application/json",
-      // "image/jpeg",
-      const supportedType: Array<string> = [
-         "text/plain",
-         "text/markdown",
-         "application/json",
-         "multipart/form-data",
-      ];
+      // | `text/plain`       | `.txt`                         |
+      // | `text/markdown`    | `.md`, `.html`, `.txt`         |
+      // | `text/html`        | `.html`, `.txt`                |
+      // | `application/json` | `.json`, `.txt`                |
+      // | `image/png`        | `.png`, `.jpg`, `.webp`, `gif` |
+      // | `image/jpeg`       | `.png`, `.jpg`, `.webp`, `gif` |
+      // | `image/webp`       | `.png`, `.jpg`, `.webp`, `gif` |
+      // | `image/gif`        | `.png`, `.jpg`, `.webp`, `gif` |
+
+      let supportedType: Array<string>;
+      console.log("Fragment#formats#if this.type: %s", this.type); // __AUTO_GENERATED_PRINT_VAR__
+      if (this.type.includes("text/plain")) {
+         supportedType = ["txt"];
+      } else if (this.type.includes("text/markdown")) {
+         supportedType = ["md", "html", "txt"];
+      } else if (this.type.includes("text/html")) {
+         supportedType = ["html", "txt"];
+      } else if (this.type.includes("application/json")) {
+         supportedType = ["json", "txt"];
+      } else if (
+         this.type.includes("image/png") ||
+         this.type.includes("image/jpeg") ||
+         this.type.includes("image/webp") ||
+         this.type.includes("image/gif")
+      ) {
+         supportedType = ["png", "jpg", "webp", "gif"];
+      }
+
+      // @ts-ignore
       return supportedType;
    }
 
