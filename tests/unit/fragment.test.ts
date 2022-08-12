@@ -185,12 +185,16 @@ describe("Fragment class", () => {
             type: "text/plain; charset=utf-8",
             size: 0,
          });
-         expect(fragment.formats).toEqual([
-            "text/plain",
-            "text/markdown",
-            "application/json",
-            "multipart/form-data",
-         ]);
+         expect(fragment.formats).toEqual(["txt"]);
+      });
+
+      test("formats returns the expected result for markdown", () => {
+         const fragment = new Fragment({
+            ownerId: "1234",
+            type: "text/markdown",
+            size: 0,
+         });
+         expect(fragment.formats).toEqual(["md", "html", "txt"]);
       });
    });
 
