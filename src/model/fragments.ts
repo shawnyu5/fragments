@@ -20,14 +20,6 @@ export function hash(str: string) {
 // NOTE: need to require since data uses modules.exports
 // tslint:disable-next-line
 const data = require("./data");
-// import {
-// readFragment,
-// writeFragment,
-// readFragmentData,
-// writeFragmentData,
-// listFragments,
-// deleteFragment,
-// } from "./data";
 
 export class Fragment {
    id: string = "";
@@ -167,7 +159,17 @@ export class Fragment {
     * @returns {Array<string>} list of supported mime types
     */
    get formats(): Array<string> {
-      const supportedType: Array<string> = ["text/plain", "text/markdown"];
+      // "text/plain",
+      // "text/plain; charset=utf-8",
+      // "text/markdown",
+      // "application/json",
+      // "image/jpeg",
+      const supportedType: Array<string> = [
+         "text/plain",
+         "text/markdown",
+         "application/json",
+         "multipart/form-data",
+      ];
       return supportedType;
    }
 
@@ -182,6 +184,8 @@ export class Fragment {
          "text/plain; charset=utf-8",
          "text/markdown",
          "application/json",
+         "image/jpeg",
+         "multipart/form-data",
       ];
       for (const type of supportedType) {
          if (type === value) {

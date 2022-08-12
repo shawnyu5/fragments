@@ -25,9 +25,8 @@ export async function fragmentsWithId(req: any, res: any) {
    const ownerId = req.user;
 
    try {
-      // let fragments = await Fragment.byOwnerId(ownerId, id);
-      let fragments = await Fragment.byOwnerId(ownerId, id);
-      let data = await fragments.getData();
+      const fragments = await Fragment.byOwnerId(ownerId, id);
+      const data = await fragments.getData();
       res.status(201).json(createSuccessResponse({ fragments: data }));
    } catch (err) {
       logger.error(err);
