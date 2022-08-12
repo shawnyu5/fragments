@@ -122,7 +122,7 @@ export class Fragment {
 
    /**
     * Set's the fragment's data in the database
-    * @param {Buffer} dataToSave
+    * @param dataToSave - data to save
     * @returns Promise
     */
    async setData(dataToSave: Buffer): Promise<void> {
@@ -186,6 +186,10 @@ export class Fragment {
          "application/json",
          "image/jpeg",
          "multipart/form-data",
+         "image/png",
+         "image/jpeg",
+         "image/webp",
+         "image/gif",
       ];
       for (const type of supportedType) {
          if (type === value) {
