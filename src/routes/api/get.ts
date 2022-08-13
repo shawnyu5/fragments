@@ -1,6 +1,7 @@
 import logger from "../../logger";
 import { Fragment } from "../../model/fragments";
 import { createSuccessResponse, createErrorResponse } from "../../response";
+import sharp from "sharp";
 /**
  * Get a list of fragments for the current user
  */
@@ -56,27 +57,58 @@ export async function getFragmentMetaData(req: any, res: any) {
  * @param res - the response object
  */
 export async function convertFragmentToType(req: any, res: any) {
-   const supportedExtensions = ["md"];
    const extension = req.params.ext;
-   // check if the extension passed in is supported, and the fragment type is supported to convert to that extension
-   if (!supportedExtensions.includes(extension)) {
-      res.status(400).json(
-         createErrorResponse(
-            400,
-            `Unsupported extension, supported extensions are: ${supportedExtensions}`
-         )
-      );
-      return;
-   }
-   const md = require("markdown-it")();
 
    const id = req.params.id;
    const ownerId = req.user;
-
    const fragment = await Fragment.byOwnerId(ownerId, id);
-   const data = (await fragment.getData()).toString();
-   const converted = md.render(data);
+   const data = await fragment.getData();
 
-   res.status(201).json(createSuccessResponse({ html: converted }));
-   // res.status(201).json(createSuccessResponse({ success: true }));
+   if (!fragment) {
+      logger.error("Fragment not found");
+      res.status(500).json(createErrorResponse(500, "Fragment not found"));
+   }
+   // check if the current fragment can be converted to the requested type
+   if (!fragment.formats.includes(extension)) {
+      logger.error(`Fragment cannot be converted to this type: ${extension}`);
+      res.status(500).json(
+         createErrorResponse(
+            500,
+            `Fragment cannot be converted to this type: ${extension}`
+         )
+      );
+   }
+
+   console.log("convertFragmentToType extension: %s", extension); // __AUTO_GENERATED_PRINT_VAR__
+   // use markdown it to convert to html
+   if (extension == "html") {
+      const md = require("markdown-it")();
+      console.log("convertFragmentToType#if data: %s", data); // __AUTO_GENERATED_PRINT_VAR__
+      const converted = md.render(data.toString());
+      res.status(201).json(createSuccessResponse({ converted: converted }));
+      return;
+   }
+   // use sharp to conver to image types
+   else if (extension == ("jpeg" || "png" || "webp" || "gif")) {
+      let converted: sharp.Sharp;
+      try {
+         switch (extension) {
+            case "jpeg":
+               converted = sharp(data).jpeg();
+            case "png":
+               converted = sharp(data).png();
+            case "webp":
+               converted = sharp(data).webp();
+            case "gif":
+               converted = sharp(data).gif();
+         }
+
+         // @ts-ignore
+         res.status(201).json(createSuccessResponse({ converted: converted }));
+      } catch (err) {
+         logger.error(err);
+         res.status(500).json(createErrorResponse(500, err as string));
+      }
+      return;
+   }
 }

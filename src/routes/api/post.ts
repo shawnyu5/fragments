@@ -12,6 +12,7 @@ export async function fragment(req: any, res: any) {
    try {
       let fragment = new Fragment({ type: contentType, ownerId: user });
 
+      // "multipart/form-data"
       await fragment.setData(body);
       await fragment.save();
 

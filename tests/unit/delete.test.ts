@@ -20,7 +20,6 @@ describe("DELETE /fragments/:id", () => {
          ownerId: hash(ownerId),
          type: "text/plain",
       });
-      console.log("(anon)#(anon) fragment: %s", fragment.ownerId); // __AUTO_GENERATED_PRINT_VAR__
 
       await fragment.save();
 

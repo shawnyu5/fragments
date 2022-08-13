@@ -159,17 +159,7 @@ export class Fragment {
     * @returns {Array<string>} list of supported mime types
     */
    get formats(): Array<string> {
-      // | `text/plain`       | `.txt`                         |
-      // | `text/markdown`    | `.md`, `.html`, `.txt`         |
-      // | `text/html`        | `.html`, `.txt`                |
-      // | `application/json` | `.json`, `.txt`                |
-      // | `image/png`        | `.png`, `.jpg`, `.webp`, `gif` |
-      // | `image/jpeg`       | `.png`, `.jpg`, `.webp`, `gif` |
-      // | `image/webp`       | `.png`, `.jpg`, `.webp`, `gif` |
-      // | `image/gif`        | `.png`, `.jpg`, `.webp`, `gif` |
-
       let supportedType: Array<string>;
-      console.log("Fragment#formats#if this.type: %s", this.type); // __AUTO_GENERATED_PRINT_VAR__
       if (this.type.includes("text/plain")) {
          supportedType = ["txt"];
       } else if (this.type.includes("text/markdown")) {

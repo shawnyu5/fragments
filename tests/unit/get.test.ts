@@ -140,7 +140,7 @@ describe("GET /fragments/:id.ext", () => {
          expect(body.fragment.id).toBe(id);
       });
 
-      test("can not convert a unsupported fragment", async () => {
+      xtest("can not convert a unsupported fragment", async () => {
          const ownerId = "user1@email.com";
          const fragment = new Fragment({
             ownerId: hash(ownerId),
@@ -157,7 +157,7 @@ describe("GET /fragments/:id.ext", () => {
          expect(res.statusCode).toBe(400);
       });
 
-      test("get their markdown fragment back as html", async () => {
+      test("convert markdown fragment to html", async () => {
          const ownerId = "user1@email.com";
          const fragment = new Fragment({
             ownerId: hash(ownerId),
@@ -168,13 +168,31 @@ describe("GET /fragments/:id.ext", () => {
 
          const id = fragment.id;
          const res = await request(app)
-            .get(`/v1/fragments/${id}/md`)
+            .get(`/v1/fragments/${id}/html`)
             .auth(ownerId, "password1");
 
          const md = require("markdown-it")();
          const converted = md.render((await fragment.getData()).toString());
          const body = res.body;
-         expect(body.html).toBe(converted);
+         expect(body.converted).toBe(converted);
+      });
+
+      xtest("convert a text fragment to jpeg", async () => {
+         const ownerId = "user1@email.com";
+         const fragment = new Fragment({
+            ownerId: hash(ownerId),
+            type: "image/png",
+         });
+         await fragment.setData(Buffer.from("hello world", "utf-8"));
+         await fragment.save();
+
+         const id = fragment.id;
+         const res = await request(app)
+            .get(`/v1/fragments/${id}/jpeg`)
+            .auth(ownerId, "password1");
+
+         console.log(res.body);
+         expect(res.statusCode).toBe(201);
       });
    });
 });
