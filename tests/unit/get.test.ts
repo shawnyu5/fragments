@@ -191,8 +191,18 @@ describe("GET /fragments/:id.ext", () => {
             .get(`/v1/fragments/${id}/jpeg`)
             .auth(ownerId, "password1");
 
-         console.log(res.body);
          expect(res.statusCode).toBe(201);
       });
+   });
+
+   test("able to get a fragments valid conversion types", async () => {
+      const ownerId = "user1@email.com";
+      const supportedType = ["md", "html", "txt"];
+      const fragment = new Fragment({
+         ownerId: hash(ownerId),
+         type: "text/markdown",
+      });
+
+      expect(fragment.formats).toEqual(supportedType);
    });
 });

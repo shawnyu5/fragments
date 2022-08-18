@@ -158,8 +158,9 @@ export class Fragment {
     * Returns the formats into which this fragment type can be converted
     * @returns {Array<string>} list of supported mime types
     */
-   get formats(): Array<string> {
+   formats(): Array<string> {
       let supportedType: Array<string>;
+      // console.log("Fragment#formats#if this.type: %s", this.type); // __AUTO_GENERATED_PRINT_VAR__
       if (this.type.includes("text/plain")) {
          supportedType = ["txt"];
       } else if (this.type.includes("text/markdown")) {
@@ -175,9 +176,9 @@ export class Fragment {
          this.type.includes("image/gif")
       ) {
          supportedType = ["png", "jpg", "webp", "gif"];
+      } else {
+         supportedType = [""];
       }
-
-      // @ts-ignore
       return supportedType;
    }
 

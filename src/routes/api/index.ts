@@ -29,9 +29,10 @@ const router = express.Router();
 
 // Define our first route, which will be: GET /v1/fragments
 router.get("/fragments", get.getFragments);
+router.get("/fragments/convert/:id/:ext", get.convertFragmentToType);
+router.get("/fragments/conversion-types/:id", get.getSupportedConversionTypes);
 router.get("/fragments/:id", get.fragmentsWithId);
 router.get("/fragments/:id/info", get.getFragmentMetaData);
-router.get("/fragments/:id/:ext", get.convertFragmentToType);
 router.delete("/fragments/:id", deleteRoute.deleteFragment);
 router.post("/fragments", rawBody(), post.fragment);
 router.put("/fragments/:id", rawBody(), put.updateFragment);

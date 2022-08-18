@@ -185,7 +185,7 @@ describe("Fragment class", () => {
             type: "text/plain; charset=utf-8",
             size: 0,
          });
-         expect(fragment.formats).toEqual(["txt"]);
+         expect(fragment.formats()).toEqual(["txt"]);
       });
 
       test("formats returns the expected result for markdown", () => {
@@ -194,7 +194,7 @@ describe("Fragment class", () => {
             type: "text/markdown",
             size: 0,
          });
-         expect(fragment.formats).toEqual(["md", "html", "txt"]);
+         expect(fragment.formats()).toEqual(["md", "html", "txt"]);
       });
    });
 

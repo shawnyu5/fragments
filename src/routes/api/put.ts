@@ -36,7 +36,7 @@ export async function updateFragment(req: any, res: any) {
          return;
       }
       // update the data of fragment
-      fragment.setData(Buffer.from("hello world"));
+      // fragment.setData(Buffer.from("hello world"));
       res.send(createSuccessResponse({ fragment: fragment })).status(200);
    } catch (err) {
       logger.error(err);

@@ -81,7 +81,7 @@ export async function readFragment(
       const data = await dbClient.send(command);
       // We may or may not get back any data (e.g., no item found for the given key).
       // If we get back an item (fragment), we'll return it.  Otherwise we'll return `undefined`.
-      return data?.Item as IFragment;
+      return data?.Item?.value as IFragment;
    } catch (err) {
       logger.warn({ err, params }, "error reading fragment from DynamoDB");
       throw err;
