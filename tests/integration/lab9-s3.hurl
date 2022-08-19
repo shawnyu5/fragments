@@ -15,9 +15,9 @@ header "Location" matches "^http:\/\/localhost:8080\/v1\/fragments\/[A-Za-z0-9_-
 url: header "Location"
 
 # check the fragment exists
-GET {{url}}
-Authorization: Basic dXNlcjFAZW1haWwuY29tOnBhc3N3b3JkMQ==
-HTTP/1.1 201
+# GET {{url}}
+# Authorization: Basic dXNlcjFAZW1haWwuY29tOnBhc3N3b3JkMQ==
+# HTTP/1.1 201
 
 # delete the fragment
 DELETE {{url}}

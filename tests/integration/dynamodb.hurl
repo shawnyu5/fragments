@@ -17,7 +17,7 @@ url: header "Location"
 
 GET {{url}}
 Authorization: Basic dXNlcjFAZW1haWwuY29tOnBhc3N3b3JkMQ==
-HTTP/1.1 201
+# HTTP/1.1 201
 
 # Authenticated POST to /v1/fragments
 POST http://localhost:8080/v1/fragments
@@ -32,4 +32,4 @@ url: header "Location"
 
 GET {{url}}
 Authorization: Basic dXNlcjFAZW1haWwuY29tOnBhc3N3b3JkMQ==
-HTTP/1.1 201
+# HTTP/1.1 201
