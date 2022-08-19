@@ -26,32 +26,28 @@ export async function fragmentsWithId(req: any, res: any) {
    const ownerId = req.user;
 
    // if id ends with ., remove the dot
-   if (id.includes(".")) {
-      id = id.split(".")[0];
-   }
+   // if (id.includes(".")) {
+   // id = id.split(".")[0];
+   // }
 
    try {
       const fragments = await Fragment.byUser(ownerId, true);
-      if (!fragments) {
-         throw new Error(`User with owner id ${ownerId} has no fragments`);
-      }
-      let found: Fragment;
+      // if (!fragments) {
+      // throw new Error(`User with owner id ${ownerId} has no fragments`);
+      // }
+      let found: any;
       // find the fragment with the given id
       for (let current of fragments) {
          // @ts-ignore
          if (current.id == id) {
-            found = current as Fragment;
+            found = current;
          }
       }
 
-      // @ts-ignore
-      console.log("fragmentsWithId found.value: %s", found.value); // __AUTO_GENERATED_PRINT_VAR__
       // create new fragment from found fragment
-      // @ts-ignore
       const fragment = new Fragment(found.value);
-      fragment.setData(Buffer.from("HELLO"));
+      // fragment.setData(Buffer.from("HELLO"));
       const data = await fragment.getData();
-
       res.status(201).json(createSuccessResponse({ data: data }));
    } catch (err) {
       logger.error(err);

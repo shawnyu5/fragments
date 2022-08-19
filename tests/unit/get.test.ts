@@ -168,13 +168,13 @@ describe("GET /fragments/:id.ext", () => {
 
          const id = fragment.id;
          const res = await request(app)
-            .get(`/v1/fragments/${id}/html`)
+            .get(`/v1/fragments/convert/${id}/html`)
             .auth(ownerId, "password1");
 
          const md = require("markdown-it")();
          const converted = md.render((await fragment.getData()).toString());
          const body = res.body;
-         expect(body.converted).toBe(converted);
+         expect(body).toBe(converted);
       });
 
       xtest("convert a text fragment to jpeg", async () => {
@@ -203,6 +203,6 @@ describe("GET /fragments/:id.ext", () => {
          type: "text/markdown",
       });
 
-      expect(fragment.formats).toEqual(supportedType);
+      expect(fragment.formats()).toEqual(supportedType);
    });
 });
